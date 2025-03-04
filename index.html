@@ -1,1 +1,51 @@
-<img src="https://i.pinimg.com/736x/99/c2/ab/99c2abd78635ab30c88df94836f1fdf8.jpg" alt="Hình ảnh dễ thương">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang của tôi</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .top-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-left img {
+            width: 50px; /* Kích thước hình ảnh */
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .center-image {
+            animation: spin 5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-left">
+        <img src="https://i.pinimg.com/736x/99/c2/ab/99c2abd78635ab30c88df94836f1fdf8.jpg" alt="Hình ảnh">
+        <span>skibidi toilet</span>
+    </div>
+
+    <img class="center-image" src="https://example.com/cat-image.png" alt="Con mèo" style="width: 100px; height: auto;">
+
+</body>
+</html>

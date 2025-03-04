@@ -12,6 +12,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            position: relative; /* Allow absolute positioning of the text */
         }
 
         .top-left {
@@ -58,27 +59,15 @@
             background-color: #0056b3;
         }
 
-        /* CSS for the sidebar */
-        .sidebar {
-            position: fixed;
-            right: 10px;
+        /* Style for the large text */
+        .large-text {
+            position: absolute;
             top: 50%;
-            transform: translateY(-50%);
-            width: 200px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: none; /* Hide the sidebar initially */
-            padding: 10px;
-            text-align: center;
-        }
-
-        .toggle-icon {
-            position: fixed;
-            right: 10px;
-            top: 10px;
-            cursor: pointer;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px; /* Large font size */
+            color: #333;
+            display: none; /* Hide initially */
         }
     </style>
 </head>
@@ -92,24 +81,18 @@
     <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Image" style="width: 100px; height: auto;">
 
     <div class="button-container">
-        <button onclick="showImage('yes')">Yes</button>
-        <button onclick="showImage('no')">No</button>
+        <button onclick="showText()">Yes</button>
+        <button onclick="showText()">No</button>
     </div>
 
-    <img id="resultImage" class="result-image" src="" alt="Result Image" style="display: none;">
-
-    <div class="toggle-icon" onclick="toggleSidebar()">
-        <img src="https://i.pinimg.com/736x/98/c5/d4/98c5d4785153a3d594b4bef0b7be99e6.jpg" alt="Toggle Sidebar" style="width: 50px;">
-    </div>
-
-    <div id="sidebar" class="sidebar">
-        <p>hello</p>
-    </div>
+    <div id="largeText" class="large-text">sibidi</div>
 
     <script>
-        function showImage(response) {
-            const resultImage = document.getElementById('resultImage');
-            if (response === 'yes') {
-                resultImage.src = "https://i.pinimg.com/736x/cf/e2/16/cfe21648318c681852b47417377f9566.jpg";
-            } else {
-                resultImage.src = "https://i.pinimg.com/736x/d4/63/6c/d4636c42d439d52a84a550159ad6f1c9.jpg";
+        function showText() {
+            const largeText = document.getElementById('largeText');
+            largeText.style.display = 'block'; // Show the large text
+        }
+    </script>
+
+</body>
+</html>

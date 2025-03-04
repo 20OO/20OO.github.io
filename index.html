@@ -7,6 +7,7 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -30,11 +31,37 @@
 
         .center-image {
             animation: spin 5s linear infinite;
+            margin-bottom: 20px; /* Khoảng cách giữa hình ảnh và nút */
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Khoảng cách giữa các nút */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-image {
+            margin-top: 20px;
+            display: none; /* Ẩn hình ảnh kết quả ban đầu */
         }
     </style>
 </head>
@@ -45,7 +72,26 @@
         <span>skibidi toilet</span>
     </div>
 
-    <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Con mèo" style="width: 100px; height: auto;">
+    <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Hình ảnh" style="width: 100px; height: auto;">
+
+    <div class="button-container">
+        <button onclick="showImage('yes')">Yes</button>
+        <button onclick="showImage('no')">No</button>
+    </div>
+
+    <img id="resultImage" class="result-image" src="" alt="Hình ảnh kết quả">
+
+    <script>
+        function showImage(response) {
+            const resultImage = document.getElementById('resultImage');
+            if (response === 'yes') {
+                resultImage.src = "https://i.pinimg.com/736x/cf/e2/16/cfe21648318c681852b47417377f9566.jpg";
+            } else {
+                resultImage.src = "https://i.pinimg.com/736x/d4/63/6c/d4636c42d439d52a84a550159ad6f1c9.jpg";
+            }
+            resultImage.style.display = 'block'; // Hiện hình ảnh kết quả
+        }
+    </script>
 
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang của tôi</title>
+    <title>My Page</title>
     <style>
         body {
             display: flex;
@@ -23,14 +23,14 @@
         }
 
         .top-left img {
-            width: 50px; /* Kích thước hình ảnh */
+            width: 50px; /* Image size */
             height: auto;
             margin-right: 10px;
         }
 
         .center-image {
             animation: spin 5s linear infinite;
-            margin-bottom: 20px; /* Khoảng cách giữa hình ảnh và nút */
+            margin-bottom: 20px; /* Space between the image and buttons */
         }
 
         @keyframes spin {
@@ -40,7 +40,7 @@
 
         .button-container {
             display: flex;
-            gap: 10px; /* Khoảng cách giữa các nút */
+            gap: 10px; /* Space between buttons */
         }
 
         button {
@@ -58,7 +58,7 @@
             background-color: #0056b3;
         }
 
-        /* CSS cho bảng bên phải */
+        /* CSS for the sidebar */
         .sidebar {
             position: fixed;
             right: 10px;
@@ -69,7 +69,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: none; /* Ẩn bảng ban đầu */
+            display: none; /* Hide the sidebar initially */
             padding: 10px;
             text-align: center;
         }
@@ -85,18 +85,18 @@
 <body>
 
     <div class="top-left">
-        <img src="https://i.pinimg.com/736x/99/c2/ab/99c2abd78635ab30c88df94836f1fdf8.jpg" alt="Hình ảnh">
+        <img src="https://i.pinimg.com/736x/99/c2/ab/99c2abd78635ab30c88df94836f1fdf8.jpg" alt="Image">
         <span>skibidi toilet</span>
     </div>
 
-    <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Hình ảnh" style="width: 100px; height: auto;">
+    <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Image" style="width: 100px; height: auto;">
 
     <div class="button-container">
         <button onclick="showImage('yes')">Yes</button>
         <button onclick="showImage('no')">No</button>
     </div>
 
-    <img id="resultImage" class="result-image" src="" alt="Hình ảnh kết quả" style="display: none;">
+    <img id="resultImage" class="result-image" src="" alt="Result Image" style="display: none;">
 
     <div class="toggle-icon" onclick="toggleSidebar()">
         <img src="https://i.pinimg.com/736x/98/c5/d4/98c5d4785153a3d594b4bef0b7be99e6.jpg" alt="Toggle Sidebar" style="width: 50px;">
@@ -112,6 +112,4 @@
             if (response === 'yes') {
                 resultImage.src = "https://i.pinimg.com/736x/cf/e2/16/cfe21648318c681852b47417377f9566.jpg";
             } else {
-                resultImage.src = "https://i.pinimg.com/736x/d4/63/6c/d4636c42d439d52a84a550159ad6f1c9.jpg";
-            }
-            resultImage.style
+                resultImage.src = "https://i.pinimg.com/736x/d4/63/6c/d4636c42d439d52a84a550159ad6f

@@ -3,96 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>omg its raven oml</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            position: relative; /* Allow absolute positioning of the text */
-        }
-
-        .top-left {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .top-left img {
-            width: 50px; /* Image size */
-            height: auto;
-            margin-right: 10px;
-        }
-
-        .center-image {
-            animation: spin 5s linear infinite;
-            margin-bottom: 20px; /* Space between the image and buttons */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .button-container {
-            display: flex;
-            gap: 10px; /* Space between buttons */
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Style for the large text */
-        .large-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px; /* Large font size */
-            color: #333;
-            display: none; /* Hide initially */
-        }
-    </style>
+    <title>Spotify-like Theme</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <div class="top-left">
-        <img src="https://i.pinimg.com/736x/99/c2/ab/99c2abd78635ab30c88df94836f1fdf8.jpg" alt="Image">
-        <span>skibidi toilet</span>
-    </div>
-
-    <img class="center-image" src="https://media.discordapp.net/attachments/1155410618870939651/1346099288500994079/54acc053-0ed5-4dff-ad75-bb3fae5ef284.webp?ex=67c79ce7&is=67c64b67&hm=7d2d00523137a0e9340ed8b5f48919a6045eff7b7f22a5daf67709723cedf172&=&animated=true" alt="Image" style="width: 100px; height: auto;">
-
-    <div class="button-container">
-        <button onclick="showText()">Yes</button>
-        <button onclick="showText()">No</button>
-    </div>
-
-    <div id="largeText" class="large-text">sibidi</div>
-
-    <script>
-        function showText() {
-            const largeText = document.getElementById('largeText');
-            largeText.style.display = 'block'; // Show the large text
-        }
-    </script>
-
+    <header>
+        <h1>My Music App</h1>
+    </header>
+    <main>
+        <section class="featured-playlists">
+            <h2>Featured Playlists</h2>
+            <div class="playlist-grid">
+                <div class="playlist-card">
+                    <a href="https://example.com/chill-vibes" target="_blank">
+                        <img src="https://i.pinimg.com/736x/e5/3d/c2/e53dc2651986d5393cbf2b20b57a6d8c.jpg" alt="Chill Vibes Playlist Cover">
+                    </a>
+                    <h3>Chill Vibes</h3>
+                </div>
+                <div class="playlist-card">
+                    <a href="https://example.com/top-hits" target="_blank">
+                        <img src="https://i.pinimg.com/736x/e5/3d/c2/e53dc2651986d5393cbf2b20b57a6d8c.jpg" alt="Top Hits Playlist Cover">
+                    </a>
+                    <h3>Top Hits</h3>
+                </div>
+                <div class="playlist-card">
+                    <a href="https://example.com/workout-mix" target="_blank">
+                        <img src="https://i.pinimg.com/736x/e5/3d/c2/e53dc2651986d5393cbf2b20b57a6d8c.jpg" alt="Workout Mix Playlist Cover">
+                    </a>
+                    <h3>Workout Mix</h3>
+                </div>
+                <div class="playlist-card">
+                    <a href="https://example.com/party-anthems" target="_blank">
+                        <img src="https://i.pinimg.com/736x/e5/3d/c2/e53dc2651986d5393cbf2b20b57a6d8c.jpg" alt="Party Anthems Playlist Cover">
+                    </a>
+                    <h3>Party Anthems</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 My Music App</p>
+    </footer>
 </body>
 </html>

@@ -25,8 +25,6 @@ overflow:hidden
 100%{background-position:0% 50%}
 }
 
-/* loader */
-
 #loader{
 position:fixed;
 width:100%;
@@ -59,8 +57,6 @@ pointer-events:none;opacity:.6;animation:fade .5s linear forwards
 }
 
 @keyframes fade{to{transform:scale(0);opacity:0}}
-
-/* particles */
 
 #particles{
 position:fixed;
@@ -134,8 +130,6 @@ transform:scale(1.08);
 background:rgba(255,255,255,.2)
 }
 
-/* bottom visualizer */
-
 #visualizer{
 position:fixed;
 bottom:0;
@@ -182,7 +176,7 @@ z-index:1
 
 </div>
 
-<audio id="music" preload="auto"
+<audio id="music"
 src="https://cs1.mp3.pm/listen/244459282/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQvUzVVbCtVaTVBNmhHU1RIZ01vOFE2ZWJYU2dkS3RhN3JzRlZxQ1hVTEk1U2FuVllRbkxralJBZHF2OG1GRUE5MUNvMU41emJzU1ZzTE9meWNRWlpVMW81R1hTSnZQS0tYT1Y/74Seventy-Four_-_all_i_want_is_you_Rebzyyx_slow_(mp3.pm).mp3"></audio>
 
 <script>
@@ -190,9 +184,9 @@ src="https://cs1.mp3.pm/listen/244459282/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQ
 /* loader */
 
 const loader=document.getElementById("loader")
-setTimeout(()=>loader.style.display="none",2500)
+setTimeout(()=>loader.style.display="none",2000)
 
-/* typing name */
+/* typing */
 
 const nameText="exy"
 let ni=0
@@ -244,9 +238,11 @@ dy:(Math.random()-.5)
 }))
 
 function pdraw(){
+
 pctx.clearRect(0,0,pcanvas.width,pcanvas.height)
 
 for(const p of particles){
+
 pctx.beginPath()
 pctx.arc(p.x,p.y,p.r,0,Math.PI*2)
 pctx.fillStyle="#fff"
@@ -257,14 +253,16 @@ p.y+=p.dy
 
 if(p.x<0||p.x>pcanvas.width)p.dx*=-1
 if(p.y<0||p.y>pcanvas.height)p.dy*=-1
+
 }
 
 requestAnimationFrame(pdraw)
+
 }
 
 pdraw()
 
-/* audio + visualizers */
+/* visualizers */
 
 const audio=document.getElementById("music")
 const vcanvas=document.getElementById("visualizer")
@@ -279,13 +277,16 @@ circle.height=120
 vcanvas.width=innerWidth
 vcanvas.height=120
 
-let audioCtx, analyser, dataArray
+let audioCtx
+let analyser
+let dataArray
 
 function startAudio(){
 
-if(audioCtx)return
+if(audioCtx) return
 
-audioCtx=new AudioContext()
+audioCtx=new (window.AudioContext||window.webkitAudioContext)()
+
 analyser=audioCtx.createAnalyser()
 
 const src=audioCtx.createMediaElementSource(audio)
@@ -294,36 +295,52 @@ src.connect(analyser)
 analyser.connect(audioCtx.destination)
 
 analyser.fftSize=128
+
 dataArray=new Uint8Array(analyser.frequencyBinCount)
 
-visualize()
-
-audio.play()
+audio.volume=0.8
+audio.play().catch(()=>{})
 
 }
 
-function visualize(){
+document.body.addEventListener("click",startAudio)
 
-requestAnimationFrame(visualize)
+/* animation loop */
 
+function animate(){
+
+requestAnimationFrame(animate)
+
+let arr
+
+if(dataArray){
 analyser.getByteFrequencyData(dataArray)
+arr=dataArray
+}else{
+/* demo mode */
+
+arr=new Uint8Array(64)
+for(let i=0;i<arr.length;i++){
+arr[i]=Math.random()*100
+}
+}
 
 /* bottom bars */
 
 vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
 
-const w=vcanvas.width/dataArray.length
+const w=vcanvas.width/arr.length
 
-for(let i=0;i<dataArray.length;i++){
+for(let i=0;i<arr.length;i++){
 
-let h=dataArray[i]
+let h=arr[i]
 
 vctx.fillStyle="#fff"
 vctx.fillRect(i*w,vcanvas.height-h/2,w-2,h)
 
 }
 
-/* circle visualizer */
+/* circle */
 
 cctx.clearRect(0,0,120,120)
 
@@ -332,7 +349,7 @@ const radius=40
 
 for(let i=0;i<bars;i++){
 
-let value=dataArray[i]
+let value=arr[i]
 let angle=(i/bars)*Math.PI*2
 
 let bar=value/8
@@ -355,7 +372,7 @@ cctx.stroke()
 
 }
 
-addEventListener("click",startAudio,{once:true})
+animate()
 
 /* title typing */
 

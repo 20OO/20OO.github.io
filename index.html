@@ -96,6 +96,15 @@ transform:scale(1.08);
 background:rgba(255,255,255,.2)
 }
 
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0
+}
+
 #visualizer{
 position:fixed;bottom:0;left:0;width:100%;height:120px;z-index:1
 }
@@ -149,17 +158,18 @@ src="https://cs1.mp3.pm/listen/244459282/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQ
 
 /* loader */
 
-setTimeout(()=>loader.style.display="none",3000)
+const loader=document.getElementById("loader")
+setTimeout(()=>loader.style.display="none",2500)
 
-/* typing */
+/* typing name */
 
-const name="exy"
-let i=0
+const nameText="exy"
+let ni=0
 const nameEl=document.getElementById("name")
 
 function type(){
-if(i<name.length){
-nameEl.textContent+=name[i++]
+if(ni<nameText.length){
+nameEl.textContent+=nameText[ni++]
 setTimeout(type,150)
 }
 }
@@ -170,16 +180,20 @@ type()
 const cursor=document.querySelector(".cursor")
 
 document.addEventListener("mousemove",e=>{
+
 cursor.style.left=e.clientX+"px"
 cursor.style.top=e.clientY+"px"
 
 const t=document.createElement("div")
 t.className="trail"
+
 t.style.left=e.clientX+"px"
 t.style.top=e.clientY+"px"
 
 document.body.appendChild(t)
+
 setTimeout(()=>t.remove(),500)
+
 })
 
 /* particles */
@@ -192,6 +206,7 @@ pcanvas.width=innerWidth
 pcanvas.height=innerHeight
 }
 resize()
+
 addEventListener("resize",resize)
 
 const particles=Array.from({length:70},()=>({
@@ -222,11 +237,12 @@ if(p.y<0||p.y>pcanvas.height)p.dy*=-1
 }
 
 requestAnimationFrame(pdraw)
+
 }
 
 pdraw()
 
-/* visualizer */
+/* audio visualizer */
 
 const audio=document.getElementById("music")
 const vcanvas=document.getElementById("visualizer")
@@ -239,8 +255,12 @@ let audioCtx, analyser, dataArray
 
 function startAudio(){
 
+if(audioCtx)return
+
 audioCtx=new AudioContext()
+
 analyser=audioCtx.createAnalyser()
+
 const src=audioCtx.createMediaElementSource(audio)
 
 src.connect(analyser)
@@ -271,66 +291,62 @@ for(let i=0;i<dataArray.length;i++){
 let h=dataArray[i]
 
 vctx.fillStyle="#fff"
-vctx.fillRect(i*w,vcanvas.height-h/2,w-1,h)
+
+vctx.fillRect(i*w,vcanvas.height-h/2,w-2,h)
 
 }
 
 }
 
 addEventListener("click",startAudio,{once:true})
-/* title animation optimized */
 
-(function(){
+/* TITLE TYPING EFFECT */
 
-const titles = [
+const titles=[
 "exy",
 "exy | developer",
 "exy | coder",
 "exy | learning programming"
-];
+]
 
-let t = 0;
-let c = 0;
-let deleting = false;
-let cursor = true;
+let ti=0
+let ci=0
+let del=false
 
-function updateTitle(){
+function titleLoop(){
 
-let text = titles[t];
+let txt=titles[ti]
 
-if(!deleting){
-c++;
-if(c >= text.length){
-deleting = true;
-setTimeout(updateTitle,1200);
+if(!del){
+
+document.title=txt.substring(0,ci+1)+"_"
+ci++
+
+if(ci===txt.length){
+del=true
+setTimeout(titleLoop,1200)
+return
+}
+
 }else{
-setTimeout(updateTitle,120);
-}
-}else{
-c--;
-if(c <= 0){
-deleting = false;
-t = (t+1) % titles.length;
-setTimeout(updateTitle,300);
-}else{
-setTimeout(updateTitle,80);
-}
-}
 
-document.title = text.substring(0,c) + (cursor ? "_" : "");
+document.title=txt.substring(0,ci-1)+"_"
+ci--
+
+if(ci===0){
+del=false
+ti=(ti+1)%titles.length
+}
 
 }
 
-/* cursor blink */
+setTimeout(titleLoop,120)
 
-setInterval(()=>{
-cursor = !cursor;
-},500);
+}
 
-updateTitle();
-
-})();
+titleLoop()
 
 </script>
+
 </body>
 </html>

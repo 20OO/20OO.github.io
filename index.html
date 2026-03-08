@@ -4,26 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>exy</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-cursor:none;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;cursor:none}
 
 body{
 background:linear-gradient(-45deg,#020617,#0f172a,#1e293b,#1e1b4b);
 background-size:400% 400%;
 animation:bg 12s ease infinite;
-color:white;
+color:#fff;
 text-align:center;
-overflow:hidden;
+overflow:hidden
 }
 
 @keyframes bg{
@@ -32,7 +25,7 @@ overflow:hidden;
 100%{background-position:0% 50%}
 }
 
-/* loading */
+/* loader */
 
 #loader{
 position:fixed;
@@ -40,153 +33,76 @@ width:100%;
 height:100%;
 background:#020617;
 display:flex;
-justify-content:center;
 align-items:center;
-z-index:2000;
+justify-content:center;
+z-index:2000
 }
 
-.loader-spin{
-width:60px;
-height:60px;
-border:5px solid #334155;
-border-top:5px solid #38bdf8;
-border-radius:50%;
-animation:spin 1s linear infinite;
+.spin{
+width:60px;height:60px;border:5px solid #334155;border-top:5px solid #38bdf8;border-radius:50%;
+animation:spin 1s linear infinite
 }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* custom cursor */
+/* cursor */
 
 .cursor{
-width:14px;
-height:14px;
-border:2px solid white;
-border-radius:50%;
-position:fixed;
-pointer-events:none;
-transform:translate(-50%,-50%);
-z-index:1000;
+width:14px;height:14px;border:2px solid #fff;border-radius:50%;
+position:fixed;pointer-events:none;z-index:1000;
+transform:translate(-50%,-50%)
 }
-
-/* cursor trail */
 
 .trail{
-position:fixed;
-width:8px;
-height:8px;
-background:white;
-border-radius:50%;
-pointer-events:none;
-opacity:0.6;
-animation:trailfade .6s linear forwards;
+position:fixed;width:6px;height:6px;background:#fff;border-radius:50%;
+pointer-events:none;opacity:.6;animation:fade .5s linear forwards
 }
 
-@keyframes trailfade{
-to{
-transform:scale(0);
-opacity:0;
-}
-}
+@keyframes fade{to{transform:scale(0);opacity:0}}
 
-/* particles */
-
-#particles{
-position:fixed;
-top:0;
-left:0;
-z-index:0;
-}
-
-/* glass card */
+/* layout */
 
 .card{
-position:relative;
-z-index:2;
-width:320px;
-margin:auto;
-margin-top:90px;
-padding:25px;
-background:rgba(255,255,255,0.06);
+position:relative;z-index:2;width:320px;margin:auto;margin-top:90px;padding:25px;
+background:rgba(255,255,255,.06);
 backdrop-filter:blur(15px);
-border-radius:20px;
-border:1px solid rgba(255,255,255,0.15);
+border-radius:20px;border:1px solid rgba(255,255,255,.15)
 }
-
-/* banner */
 
 .banner{
 height:150px;
 background:url("https://i.pinimg.com/originals/e1/e6/d6/e1e6d6148ec6ae3b0a2c8a3a336dcad3.gif");
-background-size:cover;
-border-radius:15px;
+background-size:cover;border-radius:15px
 }
-
-/* avatar */
 
 .avatar{
-width:110px;
-height:110px;
-border-radius:50%;
-border:4px solid white;
-margin-top:-55px;
+width:110px;height:110px;border-radius:50%;
+border:4px solid #fff;margin-top:-55px
 }
 
-/* typing */
+#name{font-size:30px;margin-top:10px}
 
-#name{
-font-size:30px;
-margin-top:10px;
-}
-
-/* buttons */
-
-.links{
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-}
+.links{display:flex;flex-direction:column;gap:12px;margin-top:20px}
 
 .btn{
-padding:12px;
-border-radius:10px;
-background:rgba(255,255,255,0.1);
-text-decoration:none;
-color:white;
-transition:0.25s;
+padding:12px;border-radius:10px;
+background:rgba(255,255,255,.1);
+text-decoration:none;color:#fff;
+transition:.2s
 }
 
 .btn:hover{
 transform:scale(1.08);
-background:rgba(255,255,255,0.2);
+background:rgba(255,255,255,.2)
 }
-
-/* visualizer */
 
 #visualizer{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:120px;
-z-index:1;
+position:fixed;bottom:0;left:0;width:100%;height:120px;z-index:1
 }
 
-/* QR */
+.qrbox{margin-top:20px;animation:qr 2s infinite}
 
-.qrbox{
-margin-top:20px;
-animation:qrbounce 2s infinite;
-}
-
-.qrbox img{
-border-radius:10px;
-}
-
-@keyframes qrbounce{
+@keyframes qr{
 0%,100%{transform:translateY(0)}
 50%{transform:translateY(-6px)}
 }
@@ -197,9 +113,7 @@ border-radius:10px;
 
 <body>
 
-<div id="loader">
-<div class="loader-spin"></div>
-</div>
+<div id="loader"><div class="spin"></div></div>
 
 <div class="cursor"></div>
 
@@ -216,158 +130,154 @@ border-radius:10px;
 <p>Student • Learning Programming</p>
 
 <div class="links">
-
-<a class="btn" href="https://youtube.com/@0ox0" target="_blank">YouTube</a> <a class="btn" href="https://tiktok.com/@28x1o" target="_blank">TikTok</a> <a class="btn" href="https://facebook.com/28OOO" target="_blank">Facebook</a> <a class="btn" href="https://github.com/20OO" target="_blank">GitHub</a>
-
+<a class="btn" href="https://youtube.com/@0ox0">YouTube</a>
+<a class="btn" href="https://tiktok.com/@28x1o">TikTok</a>
+<a class="btn" href="https://facebook.com/28OOO">Facebook</a>
+<a class="btn" href="https://github.com/20OO">GitHub</a>
 </div>
 
 <div class="qrbox">
 <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://20OO.github.io">
-<p>scan me</p>
 </div>
 
 </div>
 
-<audio id="music" preload="auto" crossorigin="anonymous"
+<audio id="music" preload="auto"
 src="https://cs1.mp3.pm/listen/244459282/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQvUzVVbCtVaTVBNmhHU1RIZ01vOFE2ZWJYU2dkS3RhN3JzRlZxQ1hVTEk1U2FuVllRbkxralJBZHF2OG1GRUE5MUNvMU41emJzU1ZzTE9meWNRWlpVMW81R1hTSnZQS0tYT1Y/74Seventy-Four_-_all_i_want_is_you_Rebzyyx_slow_(mp3.pm).mp3"></audio>
 
 <script>
 
-/* loading */
+/* loader */
 
-setTimeout(()=>{
-document.getElementById("loader").style.display="none"
-},3000)
+setTimeout(()=>loader.style.display="none",3000)
 
 /* typing */
 
-const text="exy"
+const name="exy"
 let i=0
+const nameEl=document.getElementById("name")
 
 function type(){
-if(i<text.length){
-document.getElementById("name").innerHTML+=text.charAt(i)
-i++
+if(i<name.length){
+nameEl.textContent+=name[i++]
 setTimeout(type,150)
 }
 }
 type()
 
-/* cursor + trail */
+/* cursor */
 
 const cursor=document.querySelector(".cursor")
 
 document.addEventListener("mousemove",e=>{
-
 cursor.style.left=e.clientX+"px"
 cursor.style.top=e.clientY+"px"
 
-let t=document.createElement("div")
+const t=document.createElement("div")
 t.className="trail"
 t.style.left=e.clientX+"px"
 t.style.top=e.clientY+"px"
 
 document.body.appendChild(t)
-
-setTimeout(()=>t.remove(),600)
-
+setTimeout(()=>t.remove(),500)
 })
 
 /* particles */
 
-const canvas=document.getElementById("particles")
-const ctx=canvas.getContext("2d")
+const pcanvas=document.getElementById("particles")
+const pctx=pcanvas.getContext("2d")
 
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
-
-let particles=[]
-
-for(let i=0;i<80;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2+1,
-dx:(Math.random()-0.5),
-dy:(Math.random()-0.5)
-})
+function resize(){
+pcanvas.width=innerWidth
+pcanvas.height=innerHeight
 }
+resize()
+addEventListener("resize",resize)
 
-function draw(){
+const particles=Array.from({length:70},()=>({
+x:Math.random()*innerWidth,
+y:Math.random()*innerHeight,
+r:Math.random()*2+1,
+dx:(Math.random()-.5),
+dy:(Math.random()-.5)
+}))
 
-ctx.clearRect(0,0,canvas.width,canvas.height)
+function pdraw(){
 
-particles.forEach(p=>{
-ctx.beginPath()
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
-ctx.fillStyle="white"
-ctx.fill()
+pctx.clearRect(0,0,pcanvas.width,pcanvas.height)
+
+for(const p of particles){
+
+pctx.beginPath()
+pctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+pctx.fillStyle="#fff"
+pctx.fill()
 
 p.x+=p.dx
 p.y+=p.dy
-})
 
-requestAnimationFrame(draw)
+if(p.x<0||p.x>pcanvas.width)p.dx*=-1
+if(p.y<0||p.y>pcanvas.height)p.dy*=-1
+
 }
 
-draw()
+requestAnimationFrame(pdraw)
+}
+
+pdraw()
 
 /* visualizer */
 
 const audio=document.getElementById("music")
-
-let audioCtx
-let analyser
-let source
-
 const vcanvas=document.getElementById("visualizer")
 const vctx=vcanvas.getContext("2d")
 
-vcanvas.width=window.innerWidth
+vcanvas.width=innerWidth
 vcanvas.height=120
+
+let audioCtx, analyser, dataArray
+
+function startAudio(){
+
+audioCtx=new AudioContext()
+analyser=audioCtx.createAnalyser()
+const src=audioCtx.createMediaElementSource(audio)
+
+src.connect(analyser)
+analyser.connect(audioCtx.destination)
+
+analyser.fftSize=128
+
+dataArray=new Uint8Array(analyser.frequencyBinCount)
+
+visualize()
+
+audio.play()
+
+}
 
 function visualize(){
 
 requestAnimationFrame(visualize)
 
-const dataArray=new Uint8Array(analyser.frequencyBinCount)
-
 analyser.getByteFrequencyData(dataArray)
 
 vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
 
-let barWidth=vcanvas.width/dataArray.length
+const w=vcanvas.width/dataArray.length
 
 for(let i=0;i<dataArray.length;i++){
 
 let h=dataArray[i]
 
-vctx.fillStyle="white"
-
-vctx.fillRect(i*barWidth,vcanvas.height-h/2,barWidth-1,h)
-
-}
+vctx.fillStyle="#fff"
+vctx.fillRect(i*w,vcanvas.height-h/2,w-1,h)
 
 }
 
-document.addEventListener("click",()=>{
-
-if(!audioCtx){
-
-audioCtx=new AudioContext()
-analyser=audioCtx.createAnalyser()
-source=audioCtx.createMediaElementSource(audio)
-
-source.connect(analyser)
-analyser.connect(audioCtx.destination)
-
-visualize()
-
 }
 
-audio.play()
-
-},{once:true})
+addEventListener("click",startAudio,{once:true})
 
 </script>
 

@@ -12,61 +12,60 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial;
+cursor:none;
 }
 
 body{
-height:100vh;
+
+background:linear-gradient(-45deg,#020617,#0f172a,#1e293b,#1e1b4b);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+
 color:white;
 text-align:center;
 overflow:hidden;
 
-background:linear-gradient(-45deg,#020617,#0f172a,#1e293b,#1e1b4b);
-background-size:400% 400%;
-animation:bg 10s ease infinite;
 }
 
 @keyframes bg{
+
 0%{background-position:0% 50%}
 50%{background-position:100% 50%}
 100%{background-position:0% 50%}
+
 }
 
-/* particles canvas */
+/* custom cursor */
 
-#particles{
+.cursor{
+
+width:15px;
+height:15px;
+
+border:2px solid white;
+border-radius:50%;
+
 position:fixed;
-width:100%;
-height:100%;
+
+pointer-events:none;
+
+transform:translate(-50%,-50%);
+
+z-index:1000;
+
+}
+
+/* particles */
+
+canvas{
+
+position:fixed;
 top:0;
 left:0;
+
 z-index:0;
-}
 
-/* loading */
-
-#loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#020617;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-.spinner{
-border:6px solid #334155;
-border-top:6px solid #38bdf8;
-border-radius:50%;
-width:50px;
-height:50px;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-to{transform:rotate(360deg)}
 }
 
 /* glass card */
@@ -74,58 +73,78 @@ to{transform:rotate(360deg)}
 .card{
 
 position:relative;
+
 z-index:2;
 
-margin-top:80px;
 width:320px;
 
+margin:auto;
+
+margin-top:90px;
+
 padding:25px;
-margin-left:auto;
-margin-right:auto;
 
-background:rgba(255,255,255,0.05);
-
-border-radius:20px;
+background:rgba(255,255,255,0.06);
 
 backdrop-filter:blur(15px);
 
+border-radius:20px;
+
 border:1px solid rgba(255,255,255,0.15);
+
 }
 
 /* banner */
 
 .banner{
-width:100%;
-height:160px;
-background:url("https://i.pinimg.com/736x/8e/8f/44/8e8f44c1f613efe5af1a711b9f8f0e93.jpg");
+
+height:150px;
+
+background:url("https://i.pinimg.com/originals/e1/e6/d6/e1e6d6148ec6ae3b0a2c8a3a336dcad3.gif");
+
 background-size:cover;
+
 border-radius:15px;
+
 }
 
 /* avatar */
 
 .avatar{
+
 width:110px;
 height:110px;
+
 border-radius:50%;
-border:4px solid rgba(255,255,255,0.4);
+
+border:4px solid white;
+
 margin-top:-55px;
+
 }
 
-/* typing text */
+/* typing */
 
 #name{
+
 font-size:30px;
+
 margin-top:10px;
+
 }
 
 /* buttons */
 
 .links{
+
 display:flex;
+
 flex-direction:column;
+
 gap:12px;
+
 margin-top:20px;
+
 }
 
 .btn{
@@ -134,9 +153,10 @@ padding:12px;
 
 border-radius:10px;
 
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.1);
 
 text-decoration:none;
+
 color:white;
 
 transition:0.25s;
@@ -144,22 +164,27 @@ transition:0.25s;
 }
 
 .btn:hover{
-transform:scale(1.07);
+
+transform:scale(1.08);
+
 background:rgba(255,255,255,0.2);
+
 }
 
-/* discord widget */
+/* visualizer */
 
-.discord{
-margin-top:15px;
-}
+#visualizer{
 
-/* footer */
+position:fixed;
 
-.footer{
-margin-top:15px;
-font-size:12px;
-opacity:0.7;
+bottom:0;
+left:0;
+
+width:100%;
+height:120px;
+
+z-index:1;
+
 }
 
 </style>
@@ -167,11 +192,11 @@ opacity:0.7;
 
 <body>
 
-<div id="loader">
-<div class="spinner"></div>
-</div>
+<div class="cursor"></div>
 
 <canvas id="particles"></canvas>
+
+<canvas id="visualizer"></canvas>
 
 <div class="card">
 
@@ -203,40 +228,19 @@ GitHub
 
 </div>
 
-<div class="discord">
-
-<iframe src="https://lanyard.cnrad.dev/api/discord/900581050256850984"
-width="280"
-height="80"
-frameborder="0">
-</iframe>
-
 </div>
 
-<div class="footer">
-© exy
-</div>
-
-</div>
-
-<audio id="music" loop>
-<source src="https://files.catbox.moe/7l6h4q.mp3">
-</audio>
+<audio id="music" src="https://files.catbox.moe/7l6h4q.mp3" crossorigin="anonymous"></audio>
 
 <script>
-
-/* loading */
-
-window.onload = function(){
-document.getElementById("loader").style.display="none"
-}
 
 /* typing effect */
 
 const text="exy"
+
 let i=0
 
-function typing(){
+function type(){
 
 if(i<text.length){
 
@@ -244,25 +248,29 @@ document.getElementById("name").innerHTML+=text.charAt(i)
 
 i++
 
-setTimeout(typing,150)
+setTimeout(type,150)
 
 }
 
 }
 
-typing()
+type()
 
-/* music start */
+/* cursor */
 
-document.addEventListener("click",function(){
+const cursor=document.querySelector(".cursor")
 
-document.getElementById("music").play()
+document.addEventListener("mousemove",e=>{
 
-},{once:true})
+cursor.style.left=e.clientX+"px"
+cursor.style.top=e.clientY+"px"
+
+})
 
 /* particles */
 
 const canvas=document.getElementById("particles")
+
 const ctx=canvas.getContext("2d")
 
 canvas.width=window.innerWidth
@@ -270,7 +278,7 @@ canvas.height=window.innerHeight
 
 let particles=[]
 
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
 
 particles.push({
 
@@ -303,7 +311,6 @@ ctx.fillStyle="white"
 ctx.fill()
 
 p.x+=p.dx
-
 p.y+=p.dy
 
 })
@@ -313,6 +320,67 @@ requestAnimationFrame(draw)
 }
 
 draw()
+
+/* audio visualizer */
+
+const audio=document.getElementById("music")
+
+const audioCtx=new AudioContext()
+
+const analyser=audioCtx.createAnalyser()
+
+const source=audioCtx.createMediaElementSource(audio)
+
+source.connect(analyser)
+
+analyser.connect(audioCtx.destination)
+
+analyser.fftSize=256
+
+const bufferLength=analyser.frequencyBinCount
+
+const dataArray=new Uint8Array(bufferLength)
+
+const vcanvas=document.getElementById("visualizer")
+
+const vctx=vcanvas.getContext("2d")
+
+vcanvas.width=window.innerWidth
+vcanvas.height=120
+
+function visualize(){
+
+requestAnimationFrame(visualize)
+
+analyser.getByteFrequencyData(dataArray)
+
+vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
+
+let barWidth=vcanvas.width/bufferLength
+
+for(let i=0;i<bufferLength;i++){
+
+let barHeight=dataArray[i]
+
+vctx.fillStyle="white"
+
+vctx.fillRect(i*barWidth,vcanvas.height-barHeight/2,barWidth-1,barHeight)
+
+}
+
+}
+
+visualize()
+
+/* start music */
+
+document.addEventListener("click",()=>{
+
+audioCtx.resume()
+
+audio.play()
+
+},{once:true})
 
 </script>
 

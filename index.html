@@ -33,15 +33,11 @@ animation:bg 12s ease infinite;
 100%{background-position:0% 50%;}
 }
 
-/* container */
-
 .container{
 display:flex;
 gap:40px;
 align-items:center;
 }
-
-/* glass card */
 
 .card{
 width:320px;
@@ -59,8 +55,6 @@ box-shadow:0 20px 40px rgba(0,0,0,0.6);
 transition:transform .15s;
 transform-style:preserve-3d;
 }
-
-/* banner */
 
 .banner{
 height:120px;
@@ -110,8 +104,6 @@ background:rgba(255,255,255,0.2);
 box-shadow:0 10px 20px rgba(0,0,0,.5);
 }
 
-/* video card */
-
 .video-card{
 width:320px;
 padding:20px;
@@ -124,8 +116,6 @@ align-items:center;
 border-radius:12px;
 }
 
-/* music button */
-
 .music{
 margin-top:15px;
 padding:8px 15px;
@@ -135,8 +125,6 @@ background:rgba(255,255,255,0.1);
 color:white;
 cursor:pointer;
 }
-
-/* cursor trail */
 
 .trail{
 position:fixed;
@@ -148,8 +136,6 @@ pointer-events:none;
 z-index:999;
 opacity:.7;
 }
-
-/* heart particles */
 
 .heart{
 position:fixed;
@@ -173,8 +159,6 @@ opacity:0;
 }
 
 }
-
-/* loading screen */
 
 #loader{
 position:fixed;
@@ -217,7 +201,7 @@ transform:scale(1.1);
 
 <div class="container">
 
-<div class="card" id="card">
+<div class="card tilt">
 
 <div class="banner"></div>
 
@@ -238,7 +222,7 @@ transform:scale(1.1);
 
 </div>
 
-<div class="card video-card">
+<div class="card video-card tilt">
 
 <iframe
 id="videoPlayer"
@@ -260,8 +244,6 @@ allowfullscreen>
 
 <script>
 
-/* loader */
-
 const loader=document.getElementById("loader")
 const music=document.getElementById("music")
 
@@ -278,12 +260,9 @@ loader.style.display="none"
 
 })
 
-/* typing text */
-
 const texts=[
-"Moments into memories.",
-"Love fades, memories don't.",
-"Nguyen Khanh Ly"
+"moments into memories",
+"love"
 ]
 
 const bio=document.getElementById("bio")
@@ -317,38 +296,28 @@ typeText()
 
 typeText()
 
-/* 3D card */
-
-const card=document.getElementById("card")
-
-document.addEventListener("mousemove",(e)=>{
-
-const x=(window.innerWidth/2-e.pageX)/25
-const y=(window.innerHeight/2-e.pageY)/25
-
-card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
-
-})
-
-/* music toggle */
-
 function toggleMusic(){
 
 if(music.paused){
-
 music.play()
-event.target.innerText="Pause Music"
-
 }else{
-
 music.pause()
-event.target.innerText="Play Music"
-
 }
 
 }
 
-/* cursor trail */
+const cards=document.querySelectorAll(".tilt")
+
+document.addEventListener("mousemove",(e)=>{
+
+const x=(window.innerWidth/2 - e.pageX)/25
+const y=(window.innerHeight/2 - e.pageY)/25
+
+cards.forEach(card=>{
+card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
+})
+
+})
 
 const dots=[]
 
@@ -396,8 +365,6 @@ requestAnimationFrame(animate)
 
 animate()
 
-/* hearts */
-
 function createHeart(){
 
 const heart=document.createElement("div")
@@ -417,8 +384,6 @@ heart.remove()
 }
 
 setInterval(createHeart,500)
-
-/* youtube api */
 
 let player
 

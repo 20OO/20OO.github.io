@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>exy</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+color:white;
+text-align:center;
+overflow-x:hidden;
+}
+
+/* Animated background */
+
+body{
+background: linear-gradient(-45deg,#0f172a,#1e293b,#020617,#1e1b4b);
+background-size:400% 400%;
+animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+/* Loading screen */
+
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.spinner{
+border:6px solid #334155;
+border-top:6px solid #38bdf8;
+border-radius:50%;
+width:50px;
+height:50px;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0)}
+100%{transform:rotate(360deg)}
+}
+
+/* Banner */
+
+.banner{
+width:100%;
+height:220px;
+background:url("https://pin.it/3Jks8SXEP");
+background-size:cover;
+background-position:center;
+}
+
+/* Avatar */
+
+.avatar{
+width:130px;
+height:130px;
+border-radius:50%;
+border:5px solid #020617;
+margin-top:-65px;
+}
+
+/* Container */
+
+.container{
+padding:20px;
+}
+
+/* Links */
+
+.links{
+display:flex;
+flex-direction:column;
+gap:12px;
+max-width:300px;
+margin:auto;
+margin-top:20px;
+}
+
+.btn{
+padding:12px;
+border-radius:10px;
+background:#1e293b;
+text-decoration:none;
+color:white;
+font-weight:bold;
+transition:0.25s;
+}
+
+.btn:hover{
+transform:scale(1.08);
+background:#334155;
+}
+
+/* Footer */
+
+.footer{
+margin-top:40px;
+font-size:13px;
+opacity:0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+<div class="spinner"></div>
+</div>
+
+<div class="banner"></div>
+
+<img class="avatar" src="https://pin.it/6rUk7AVIM">
+
+<div class="container">
+
+<h1>exy</h1>
+<p>Student • Learning Programming</p>
+
+<div class="links">
+
+<a class="btn" href="https://youtube.com/@0ox0" target="_blank">
+YouTube
+</a>
+
+<a class="btn" href="https://tiktok.com/@28x1o" target="_blank">
+TikTok
+</a>
+
+<a class="btn" href="https://facebook.com/28OOO" target="_blank">
+Facebook
+</a>
+
+<a class="btn" href="https://github.com/20OO" target="_blank">
+GitHub
+</a>
+
+</div>
+
+<div class="footer">
+© exy
+</div>
+
+</div>
+
+<!-- background music -->
+
+<audio id="music" loop>
+<source src="https://files.catbox.moe/7l6h4q.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+/* hide loading */
+
+window.addEventListener("load",function(){
+document.getElementById("loader").style.display="none";
+});
+
+/* play music when user interacts */
+
+document.addEventListener("click",function(){
+document.getElementById("music").play();
+},{once:true});
+
+</script>
+
+</body>
+</html>

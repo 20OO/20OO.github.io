@@ -1,131 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>exy</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;cursor:none}
-        body{
-            background:linear-gradient(-45deg,#020617,#0f172a,#1e293b,#1e1b4b);
-            background-size:400% 400%;
-            animation:bg 12s ease infinite;
-            color:#fff;
-            text-align:center;
-            overflow:hidden
-        }
-        @keyframes bg{0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}}
+<meta charset="UTF-8">
+<title>raven</title>
 
-        /* Loader - Cải tiến: Dùng logic chờ tải xong thay vì đếm giờ */
-        #loader{position:fixed;width:100%;height:100%;background:#020617;display:flex;align-items:center;justify-content:center;z-index:2000;transition: opacity 0.5s ease;}
-        .spin{width:60px;height:60px;border:5px solid #334155;border-top:5px solid #38bdf8;border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
+<style>
 
-        /* Cursor */
-        .cursor{width:14px;height:14px;border:2px solid #fff;border-radius:50%;position:fixed;pointer-events:none;z-index:1000;transform:translate(-50%,-50%)}
-        .trail{position:fixed;width:6px;height:6px;background:#fff;border-radius:50%;pointer-events:none;opacity:.6;animation:fade .5s linear forwards}
-        @keyframes fade{to{transform:scale(0);opacity:0}}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
-        /* Layout */
-        .card{position:relative;z-index:2;width:320px;margin:auto;margin-top:90px;padding:25px;background:rgba(255,255,255,.06);backdrop-filter:blur(15px);border-radius:20px;border:1px solid rgba(255,255,255,.15)}
-        .banner{height:150px;background:url("https://i.pinimg.com/originals/e1/e6/d6/e1e6d6148ec6ae3b0a2c8a3a336dcad3.gif");background-size:cover;border-radius:15px}
-        .avatar{width:110px;height:110px;border-radius:50%;border:4px solid #fff;margin-top:-55px}
-        #name{font-size:30px;margin-top:10px}
-        .links{display:flex;flex-direction:column;gap:12px;margin-top:20px}
-        .btn{padding:12px;border-radius:10px;background:rgba(255,255,255,.1);text-decoration:none;color:#fff;transition:.2s}
-        .btn:hover{transform:scale(1.08);background:rgba(255,255,255,.2)}
-        #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
-        #visualizer{position:fixed;bottom:0;left:0;width:100%;height:150px;z-index:1;pointer-events:none;}
-        .qrbox{margin-top:20px;animation:qr 2s infinite}
-        @keyframes qr{0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}}
-    </style>
+body{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+overflow:hidden;
+
+background:linear-gradient(-45deg,#0f172a,#1e293b,#020617,#0f172a);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* loading screen */
+
+#loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#020617;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+cursor:pointer;
+}
+
+.loader-text{
+font-size:28px;
+letter-spacing:4px;
+opacity:0.8;
+transition:.3s;
+}
+
+.loader-text:hover{
+opacity:1;
+transform:scale(1.1);
+}
+
+/* card */
+
+.card{
+width:320px;
+padding:30px;
+text-align:center;
+
+background:rgba(255,255,255,0.05);
+border-radius:20px;
+
+backdrop-filter:blur(12px);
+
+border:1px solid rgba(255,255,255,0.1);
+
+box-shadow:0 20px 40px rgba(0,0,0,0.6);
+
+transition:transform .15s ease;
+transform-style:preserve-3d;
+}
+
+/* banner */
+
+.banner{
+height:120px;
+background:url("https://i.pinimg.com/originals/56/93/9e/56939eaada6c55621f9c8cb644e203bc.gif") center/cover;
+border-radius:14px;
+}
+
+.avatar{
+width:110px;
+height:110px;
+border-radius:50%;
+border:4px solid white;
+margin-top:-55px;
+}
+
+h2{
+margin-top:10px;
+}
+
+.bio{
+margin-top:10px;
+color:#cbd5e1;
+min-height:22px;
+}
+
+/* links */
+
+.links{
+margin-top:20px;
+}
+
+.links a{
+display:block;
+margin:10px 0;
+padding:12px;
+
+background:rgba(255,255,255,0.08);
+border-radius:12px;
+
+color:white;
+text-decoration:none;
+
+transition:all .25s;
+}
+
+.links a:hover{
+transform:translateY(-4px) scale(1.05);
+background:rgba(255,255,255,0.2);
+box-shadow:0 10px 20px rgba(0,0,0,.5);
+}
+
+/* music button */
+
+.music{
+margin-top:15px;
+padding:8px 15px;
+
+border-radius:20px;
+border:none;
+
+background:rgba(255,255,255,0.1);
+color:white;
+
+cursor:pointer;
+}
+
+/* cursor trail */
+
+.trail{
+position:fixed;
+width:8px;
+height:8px;
+background:white;
+border-radius:50%;
+pointer-events:none;
+z-index:999;
+opacity:.7;
+}
+
+/* hearts */
+
+.heart{
+position:fixed;
+bottom:-20px;
+pointer-events:none;
+animation:floatUp linear forwards;
+opacity:.8;
+}
+
+@keyframes floatUp{
+
+0%{
+transform:translateY(0) scale(1);
+opacity:.9;
+}
+
+100%{
+transform:translateY(-110vh) scale(1.5);
+opacity:0;
+}
+
+}
+
+</style>
 </head>
 
 <body>
 
-    <div id="loader"><div class="spin"></div></div>
-    <div class="cursor"></div>
-    <canvas id="particles"></canvas> 
-    <canvas id="visualizer"></canvas>
+<div id="loader">
+<div class="loader-text">enter</div>
+</div>
 
-    <div class="card">
-        <div class="banner"></div>
-        <img class="avatar" src="https://i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif">
-        <h1 id="name"></h1>
-        <p>18+ • Learning Programming</p>
-        <div class="links">
-            <a class="btn" href="https://youtube.com/@0ox0">YouTube</a>
-            <a class="btn" href="https://tiktok.com/@28x1o">TikTok</a>
-            <a class="btn" href="https://facebook.com/28OOO">Facebook</a>
-            <a class="btn" href="https://github.com/20OO">GitHub</a>
-        </div>
-        <div class="qrbox">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://20OO.github.io">
-        </div>
-    </div>
+<div class="card" id="card">
 
-    <audio id="music" preload="auto" src="https://cs1.mp3.pm/listen/244459282/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQvUzVVbCtVaTVBNmhHU1RIZ01vOFE2ZWJYU2dkS3RhN3JzRlZxQ1hVTEk1U2FuVllRbkxralJBZHF2OG1GRUE5MUNvMU41emJzU1ZzTE9meWNRWlpVMW81R1hTSnZQS0tYT1Y/74Seventy-Four_-_all_i_want_is_you_Rebzyyx_slow_(mp3.pm).mp3"></audio>
+<div class="banner"></div>
 
-    <script>
-        /* Cải tiến: Loader chỉ tắt khi trang đã load xong hoàn toàn */
-        const loader = document.getElementById("loader");
-        window.addEventListener("load", () => {
-            loader.style.opacity = "0";
-            setTimeout(() => loader.style.display = "none", 500);
-        });
+<img src="https://i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif" class="avatar">
 
-        /* Typing name & Cursor logic giữ nguyên... */
-        const nameText="exy"; let ni=0; const nameEl=document.getElementById("name");
-        function type(){ if(ni<nameText.length){ nameEl.textContent+=nameText[ni++]; setTimeout(type,150); } }
-        type();
+<h2>raven</h2>
 
-        const cursor=document.querySelector(".cursor");
-        document.addEventListener("mousemove",e=>{
-            cursor.style.left=e.clientX+"px"; cursor.style.top=e.clientY+"px";
-            const t=document.createElement("div"); t.className="trail";
-            t.style.left=e.clientX+"px"; t.style.top=e.clientY+"px";
-            document.body.appendChild(t); setTimeout(()=>t.remove(),500);
-        });
+<p class="bio" id="bio"></p>
 
-        /* Visualizer Cải tiến */
-        const audio = document.getElementById("music");
-        const canvas = document.getElementById("visualizer");
-        const ctx = canvas.getContext("2d");
-        let audioCtx, analyser, dataArray, bufferLength;
+<div class="links">
+<a href="https://www.facebook.com/28OOO">Facebook</a>
+<a href="https://www.tiktok.com/@28x1o">TikTok</a>
+<a href="https://www.youtube.com/@0ox0^">YouTube(off)</a>
+<a href="http://discord.com/users/900581050256850984^">Discord(off)</a>
+</div>
 
-        function resizeVisualizer(){ canvas.width = window.innerWidth; canvas.height = 150; }
-        resizeVisualizer(); window.addEventListener("resize", resizeVisualizer);
+<button class="music" onclick="toggleMusic()">Pause Music</button>
 
-        function startAudio(){
-            if(audioCtx) return;
-            audioCtx = new AudioContext();
-            analyser = audioCtx.createAnalyser();
-            const src = audioCtx.createMediaElementSource(audio);
-            src.connect(analyser); analyser.connect(audioCtx.destination);
-            analyser.fftSize = 64; // Giảm fftSize để có thanh to hơn, dễ nhìn hơn
-            bufferLength = analyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
-            audio.play();
-            drawVisualizer();
-        }
+</div>
 
-        function drawVisualizer(){
-            requestAnimationFrame(drawVisualizer);
-            analyser.getByteFrequencyData(dataArray);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Cải tiến: Tự động tính toán độ rộng thanh dựa trên chiều rộng màn hình
-            const barWidth = (canvas.width / bufferLength) * 0.8;
-            let x = 0;
+<audio id="music" loop>
+<source src="https://cs1.mp3.pm/listen/237998978/amdUMFJFdmx0VDEyeHliNU9BRHFudEZ1aHl2aFQvUzVVbCtVaTVBNmhHU1YxNVV5UnR6TDNEdENOWjhQTG9DMHk3V20rNStQQnlrRzFnd1JwTGE4Sy9kbzBHNkVhYkFHWWRrZWdYUE5DQytucVFMNi95cnVXVTNVMTNSOXh0QU0/ogencore_-_Good_Loyal_Thots_-_ODETARI_Instrumental_ULTRA_SLOWED_(mp3.pm).mp3">
+</audio>
 
-            for(let i = 0; i < bufferLength; i++){
-                const barHeight = (dataArray[i] / 255) * canvas.height;
-                ctx.fillStyle = "#38bdf8";
-                ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-                x += barWidth + 2; // Thêm khoảng cách giữa các thanh
-            }
-        }
-        window.addEventListener("click", startAudio, {once: true});
-    </script>
+<script>
+
+/* loader + autoplay music */
+
+const loader=document.getElementById("loader")
+const music=document.getElementById("music")
+
+loader.addEventListener("click",()=>{
+
+music.volume=0.6
+music.play()
+
+loader.style.opacity="0"
+
+setTimeout(()=>{
+loader.style.display="none"
+},500)
+
+})
+
+/* typing bio */
+
+const texts=[
+"Moments into memories.",
+"Love fades, memories don't.",
+"18+"
+]
+
+const bio=document.getElementById("bio")
+
+let textIndex=0
+let charIndex=0
+
+function typeText(){
+
+if(charIndex<texts[textIndex].length){
+
+bio.innerHTML+=texts[textIndex].charAt(charIndex)
+
+charIndex++
+
+setTimeout(typeText,60)
+
+}
+else{
+
+setTimeout(()=>{
+bio.innerHTML=""
+charIndex=0
+textIndex=(textIndex+1)%texts.length
+typeText()
+},20000)
+
+}
+
+}
+
+typeText()
+
+/* 3D card */
+
+const card=document.getElementById("card")
+
+document.addEventListener("mousemove",(e)=>{
+
+const x=(window.innerWidth/2 - e.pageX)/25
+const y=(window.innerHeight/2 - e.pageY)/25
+
+card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
+
+})
+
+/* music button */
+
+function toggleMusic(){
+
+if(music.paused){
+music.play()
+event.target.innerText="Pause Music"
+}
+else{
+music.pause()
+event.target.innerText="Play Music"
+}
+
+}
+
+/* cursor trail */
+
+const dots=[]
+
+for(let i=0;i<18;i++){
+const d=document.createElement("div")
+d.className="trail"
+document.body.appendChild(d)
+dots.push({x:0,y:0,el:d})
+}
+
+let mouseX=0
+let mouseY=0
+
+document.addEventListener("mousemove",(e)=>{
+mouseX=e.clientX
+mouseY=e.clientY
+})
+
+function animate(){
+
+let x=mouseX
+let y=mouseY
+
+dots.forEach(dot=>{
+
+dot.x+=(x-dot.x)*0.25
+dot.y+=(y-dot.y)*0.25
+
+dot.el.style.left=dot.x+"px"
+dot.el.style.top=dot.y+"px"
+
+x=dot.x
+y=dot.y
+
+})
+
+requestAnimationFrame(animate)
+
+}
+
+animate()
+
+/* heart particles */
+
+function createHeart(){
+
+const heart=document.createElement("div")
+
+heart.className="heart"
+
+heart.innerHTML="❤"
+
+heart.style.left=Math.random()*100+"vw"
+
+heart.style.animationDuration=(4+Math.random()*4)+"s"
+
+heart.style.fontSize=(12+Math.random()*20)+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{
+heart.remove()
+},8000)
+
+}
+
+setInterval(createHeart,500)
+
+</script>
+
 </body>
 </html>

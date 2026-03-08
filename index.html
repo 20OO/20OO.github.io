@@ -242,63 +242,85 @@ requestAnimationFrame(pdraw)
 
 pdraw()
 
-/* audio visualizer */
+/* ===== NEW AUDIO VISUALIZER ===== */
 
-const audio=document.getElementById("music")
-const vcanvas=document.getElementById("visualizer")
-const vctx=vcanvas.getContext("2d")
+const audio = document.getElementById("music")
+const canvas = document.getElementById("visualizer")
+const ctx = canvas.getContext("2d")
 
-vcanvas.width=innerWidth
-vcanvas.height=120
+let audioCtx
+let analyser
+let dataArray
+let bufferLength
 
-let audioCtx, analyser, dataArray
+function resizeVisualizer(){
+canvas.width = window.innerWidth
+canvas.height = 120
+}
+
+resizeVisualizer()
+window.addEventListener("resize",resizeVisualizer)
 
 function startAudio(){
 
-if(audioCtx)return
+if(audioCtx) return
 
-audioCtx=new AudioContext()
+audioCtx = new AudioContext()
 
-analyser=audioCtx.createAnalyser()
+analyser = audioCtx.createAnalyser()
 
-const src=audioCtx.createMediaElementSource(audio)
+const src = audioCtx.createMediaElementSource(audio)
 
 src.connect(analyser)
 analyser.connect(audioCtx.destination)
 
-analyser.fftSize=128
+analyser.fftSize = 256
 
-dataArray=new Uint8Array(analyser.frequencyBinCount)
-
-visualize()
+bufferLength = analyser.frequencyBinCount
+dataArray = new Uint8Array(bufferLength)
 
 audio.play()
 
+drawVisualizer()
+
 }
 
-function visualize(){
+function drawVisualizer(){
 
-requestAnimationFrame(visualize)
+requestAnimationFrame(drawVisualizer)
 
 analyser.getByteFrequencyData(dataArray)
 
-vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
+ctx.clearRect(0,0,canvas.width,canvas.height)
 
-const w=vcanvas.width/dataArray.length
+const barWidth = canvas.width / bufferLength * 2.5
 
-for(let i=0;i<dataArray.length;i++){
+let x = 0
 
-let h=dataArray[i]
+const gradient = ctx.createLinearGradient(0,0,0,canvas.height)
+gradient.addColorStop(0,"#38bdf8")
+gradient.addColorStop(1,"#0ea5e9")
 
-vctx.fillStyle="#fff"
+for(let i=0;i<bufferLength;i++){
 
-vctx.fillRect(i*w,vcanvas.height-h/2,w-2,h)
+const barHeight = dataArray[i] * 0.6
+
+ctx.fillStyle = gradient
+
+ctx.fillRect(
+x,
+canvas.height - barHeight,
+barWidth,
+barHeight
+)
+
+x += barWidth + 1
 
 }
 
 }
 
-addEventListener("click",startAudio,{once:true})
+window.addEventListener("click",startAudio,{once:true})
 
 /* TITLE TYPING EFFECT */
 

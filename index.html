@@ -278,8 +278,10 @@ vctx.fillRect(i*w,vcanvas.height-h/2,w-1,h)
 }
 
 addEventListener("click",startAudio,{once:true})
+/* title animation optimized */
 
-</script>
+(function(){
+
 const titles = [
 "exy",
 "exy | developer",
@@ -287,45 +289,48 @@ const titles = [
 "exy | learning programming"
 ];
 
-let tIndex = 0;
-let charIndex = 0;
+let t = 0;
+let c = 0;
 let deleting = false;
 let cursor = true;
 
-function animateTitle(){
+function updateTitle(){
 
-let current = titles[tIndex];
+let text = titles[t];
 
 if(!deleting){
-document.title = current.substring(0,charIndex+1) + (cursor ? "_" : "");
-charIndex++;
-
-if(charIndex === current.length){
+c++;
+if(c >= text.length){
 deleting = true;
-setTimeout(animateTitle,1200);
-return;
-}
-
+setTimeout(updateTitle,1200);
 }else{
-
-document.title = current.substring(0,charIndex-1) + (cursor ? "_" : "");
-charIndex--;
-
-if(charIndex === 0){
+setTimeout(updateTitle,120);
+}
+}else{
+c--;
+if(c <= 0){
 deleting = false;
-tIndex = (tIndex + 1) % titles.length;
+t = (t+1) % titles.length;
+setTimeout(updateTitle,300);
+}else{
+setTimeout(updateTitle,80);
 }
+}
+
+document.title = text.substring(0,c) + (cursor ? "_" : "");
 
 }
 
-setTimeout(animateTitle,120);
-}
+/* cursor blink */
 
 setInterval(()=>{
 cursor = !cursor;
 },500);
 
-animateTitle();
+updateTitle();
 
+})();
+
+</script>
 </body>
 </html>

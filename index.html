@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -22,6 +21,7 @@ justify-content:center;
 color:white;
 overflow:hidden;
 cursor:url("https://cdn.cursors-4u.net/css-previews/bobblehead-bunny-005ae02f-css.webp"), auto;
+
 background:linear-gradient(-45deg,#0f172a,#1e293b,#020617,#0f172a);
 background-size:400% 400%;
 animation:bg 12s ease infinite;
@@ -73,6 +73,7 @@ margin-top:-55px;
 transition:all .25s ease;
 cursor:pointer;
 }
+
 .avatar:hover{
 transform:scale(1.08) translateY(-4px);
 
@@ -135,6 +136,38 @@ border:none;
 background:rgba(255,255,255,0.1);
 color:white;
 cursor:pointer;
+
+transition:all .25s;
+}
+
+.music:hover{
+
+transform:translateY(-3px) scale(1.05);
+background:rgba(255,255,255,0.2);
+
+box-shadow:0 10px 20px rgba(0,0,0,.5);
+
+}
+
+.theme-btn{
+margin-top:10px;
+padding:10px 16px;
+border-radius:20px;
+border:none;
+background:rgba(255,255,255,0.1);
+color:white;
+cursor:pointer;
+
+transition:all .25s;
+}
+
+.theme-btn:hover{
+
+transform:translateY(-3px) scale(1.05);
+background:rgba(255,255,255,0.2);
+
+box-shadow:0 10px 20px rgba(0,0,0,.5);
+
 }
 
 .trail{
@@ -174,6 +207,8 @@ opacity:0;
 
 }
 
+/* loader */
+
 #loader{
 position:fixed;
 top:0;
@@ -197,25 +232,71 @@ font-size:28px;
 letter-spacing:4px;
 color:white;
 opacity:0.8;
-transition:0.3s;
 }
 
-.loader-text:hover{
+/* ripple */
+
+.full-ripple{
+position:fixed;
+left:50%;
+top:50%;
+
+width:20px;
+height:20px;
+
+border-radius:50%;
+background:white;
+
+transform:translate(-50%,-50%) scale(0);
+
+animation:fullRipple 1s ease-out forwards;
+
+z-index:9998;
+pointer-events:none;
+}
+
+@keyframes fullRipple{
+
+0%{
+transform:translate(-50%,-50%) scale(0);
+opacity:0.9;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(120);
+opacity:0;
+}
+
+}
+
+/* blur transition */
+
+.blur-transition{
+filter:blur(15px);
+transition:filter .6s ease;
+}
+
+/* fade */
+
+.fade-theme{
+animation:themeFade .8s ease;
+}
+
+@keyframes themeFade{
+
+from{
+opacity:0;
+transform:scale(.98);
+}
+
+to{
 opacity:1;
-transform:scale(1.1);
+transform:scale(1);
 }
-/* ===== Disable text copy ===== */
 
-.bio,
-.links a,
-h2{
-user-select:none;
--webkit-user-select:none;
--moz-user-select:none;
--ms-user-select:none;
 }
+
 </style>
-
 </head>
 
 <body>
@@ -230,20 +311,21 @@ user-select:none;
 
 <div class="banner"></div>
 
-<img src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif" class="avatar" draggable="false">
+<img src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif" class="avatar">
 
 <h2>raven</h2>
 
 <p class="bio" id="bio"></p>
 
 <div class="links">
-<a href="https://www.facebook.com/28OOO">Facebook</a>
-<a href="https://www.tiktok.com/@28x1o">TikTok</a>
-<a href="https://www.youtube.com/@0ox0">YouTube</a>
-<a href="https://discord.com/users/900581050256850984">Discord</a>
+<a href="https://www.facebook.com/28OOO" target="_blank">Facebook</a>
+<a href="https://www.tiktok.com/@28x1o" target="_blank">TikTok</a>
+<a href="https://www.youtube.com/@0ox0" target="_blank">YouTube</a>
+<a href="https://discord.com/users/900581050256850984" target="_blank">Discord</a>
 </div>
 
 <button class="music" onclick="toggleMusic()">Play Music</button>
+<button id="themeBtn" class="theme-btn">Switch Theme</button>
 
 </div>
 
@@ -269,6 +351,8 @@ allowfullscreen>
 
 <script>
 
+/* loader */
+
 const loader=document.getElementById("loader")
 const music=document.getElementById("music")
 
@@ -284,6 +368,8 @@ loader.style.display="none"
 },600)
 
 })
+
+/* typing bio */
 
 const texts=[
 "Love fades, memories don't.",
@@ -314,13 +400,15 @@ charIndex=0
 textIndex=(textIndex+1)%texts.length
 typeText()
 
-},20000)//thời gian bio thay đổi
+},20000)
 
 }
 
 }
 
 typeText()
+
+/* music */
 
 function toggleMusic(){
 
@@ -332,11 +420,13 @@ music.pause()
 
 }
 
+/* tilt */
+
 const cards=document.querySelectorAll(".tilt")
 
 document.addEventListener("mousemove",(e)=>{
 
-const x=(window.innerWidth/2 - e.pageX)/30 //độ tilt của card
+const x=(window.innerWidth/2 - e.pageX)/30
 const y=(window.innerHeight/2 - e.pageY)/30
 
 cards.forEach(card=>{
@@ -344,6 +434,8 @@ card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
 })
 
 })
+
+/* cursor trail */
 
 const dots=[]
 
@@ -361,10 +453,8 @@ let mouseX=0
 let mouseY=0
 
 document.addEventListener("mousemove",(e)=>{
-
 mouseX=e.clientX
 mouseY=e.clientY
-
 })
 
 function animate(){
@@ -391,6 +481,8 @@ requestAnimationFrame(animate)
 
 animate()
 
+/* hearts */
+
 function createHeart(){
 
 const heart=document.createElement("div")
@@ -399,7 +491,6 @@ heart.innerHTML="❤"
 
 heart.style.left=Math.random()*100+"vw"
 heart.style.animationDuration=(4+Math.random()*4)+"s"
-heart.style.fontSize=(12+Math.random()*20)+"px"
 
 document.body.appendChild(heart)
 
@@ -409,55 +500,82 @@ heart.remove()
 
 }
 
-setInterval(createHeart,500)//thời gian tạo hình
+setInterval(createHeart,500)
 
-let player
+/* theme switch */
 
-function onYouTubeIframeAPIReady(){
+const themeBtn=document.getElementById("themeBtn")
 
-player=new YT.Player('videoPlayer',{
+let themeActive=false
+let videoBg=null
 
-events:{
+themeBtn.addEventListener("click",()=>{
 
-'onStateChange':function(event){
+const ripple=document.createElement("div")
+ripple.className="full-ripple"
+document.body.appendChild(ripple)
 
-if(event.data===YT.PlayerState.PLAYING){
+document.body.classList.add("blur-transition")
 
-music.pause()
+setTimeout(toggleTheme,400)
 
-}
-
-}
-
-}
+setTimeout(()=>{
+document.body.classList.remove("blur-transition")
+},900)
 
 })
 
+function toggleTheme(){
+
+const container=document.querySelector(".container")
+const avatar=document.querySelector(".avatar")
+const banner=document.querySelector(".banner")
+
+container.classList.add("fade-theme")
+
+if(!themeActive){
+
+avatar.src="https://i.pinimg.com/originals/a6/b6/8e/a6b68e1b5f7ffe5d793d4812414a8499.gif"
+
+banner.style.backgroundImage="url('https://i.pinimg.com/originals/a4/82/c8/a482c8ae90349b9942330715b300599f.gif')"
+
+videoBg=document.createElement("video")
+
+videoBg.src="https://moewalls.com/wp-content/uploads/preview/2026/mornye-galaxy-stars-wuthering-waves-preview.webm"
+
+videoBg.autoplay=true
+videoBg.loop=true
+videoBg.muted=true
+
+videoBg.style.position="fixed"
+videoBg.style.top="0"
+videoBg.style.left="0"
+videoBg.style.width="100%"
+videoBg.style.height="100%"
+videoBg.style.objectFit="cover"
+videoBg.style.zIndex="-2"
+
+document.body.appendChild(videoBg)
+
+themeActive=true
+
+}else{
+
+avatar.src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif"
+
+banner.style.backgroundImage='url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif")'
+
+if(videoBg){
+videoBg.remove()
+videoBg=null
 }
 
-const tag=document.createElement("script")
-tag.src="https://www.youtube.com/iframe_api"
-document.body.appendChild(tag)
-/* ===== Block right click on avatar ===== */
-
-const avatar = document.querySelector(".avatar");
-
-avatar.addEventListener("contextmenu", function(e){
-e.preventDefault();
-});
-let titleText = "raven's website ♡ "
-
-function animateTitle(){
-
-titleText = titleText.substring(1) + titleText[0]
-
-document.title = titleText
-
-setTimeout(animateTitle, 300)
+themeActive=false
 
 }
 
-animateTitle()
+}
+
 </script>
 
 </body>

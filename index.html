@@ -52,8 +52,9 @@ border:1px solid rgba(255,255,255,0.1);
 
 box-shadow:0 20px 40px rgba(0,0,0,0.6);
 
-transition:transform .15s;
+transition:transform .25s ease-out;
 transform-style:preserve-3d;
+will-change:transform;
 }
 
 .banner{
@@ -68,6 +69,16 @@ height:110px;
 border-radius:50%;
 border:4px solid white;
 margin-top:-55px;
+
+transition:all .25s ease;
+cursor:pointer;
+}
+.avatar:hover{
+transform:scale(1.08) translateY(-4px);
+
+box-shadow:
+0 0 20px rgba(255,255,255,0.4),
+0 10px 20px rgba(0,0,0,0.5);
 }
 
 h2{
@@ -135,6 +146,9 @@ border-radius:50%;
 pointer-events:none;
 z-index:999;
 opacity:.7;
+
+filter:blur(1px);
+box-shadow:0 0 10px white,0 0 20px rgba(255,255,255,0.5);
 }
 
 .heart{
@@ -174,6 +188,8 @@ justify-content:center;
 
 z-index:99999;
 cursor:pointer;
+
+transition:opacity .5s ease;
 }
 
 .loader-text{
@@ -188,7 +204,16 @@ transition:0.3s;
 opacity:1;
 transform:scale(1.1);
 }
+/* ===== Disable text copy ===== */
 
+.bio,
+.links a,
+h2{
+user-select:none;
+-webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+}
 </style>
 
 </head>
@@ -256,7 +281,7 @@ loader.style.opacity="0"
 
 setTimeout(()=>{
 loader.style.display="none"
-},500)
+},600)
 
 })
 
@@ -289,7 +314,7 @@ charIndex=0
 textIndex=(textIndex+1)%texts.length
 typeText()
 
-},10000)
+},20000)//thời gian bio thay đổi
 
 }
 
@@ -311,8 +336,8 @@ const cards=document.querySelectorAll(".tilt")
 
 document.addEventListener("mousemove",(e)=>{
 
-const x=(window.innerWidth/2 - e.pageX)/25
-const y=(window.innerHeight/2 - e.pageY)/25
+const x=(window.innerWidth/2 - e.pageX)/30 //độ tilt của card
+const y=(window.innerHeight/2 - e.pageY)/30
 
 cards.forEach(card=>{
 card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
@@ -384,7 +409,7 @@ heart.remove()
 
 }
 
-setInterval(createHeart,500)
+setInterval(createHeart,500)//thời gian tạo hình
 
 let player
 
@@ -413,7 +438,26 @@ music.pause()
 const tag=document.createElement("script")
 tag.src="https://www.youtube.com/iframe_api"
 document.body.appendChild(tag)
+/* ===== Block right click on avatar ===== */
 
+const avatar = document.querySelector(".avatar");
+
+avatar.addEventListener("contextmenu", function(e){
+e.preventDefault();
+});
+let titleText = " • raven's website • "
+
+function animateTitle(){
+
+titleText = titleText.substring(1) + titleText[0]
+
+document.title = titleText
+
+setTimeout(animateTitle, 300)
+
+}
+
+animateTitle()
 </script>
 
 </body>

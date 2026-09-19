@@ -385,7 +385,7 @@ background: rgba(255,255,255,0.3);
 <div class="action-btns">
     <button class="btn-custom" onclick="toggleMusic()">Play Music</button>
     <button id="themeBtn" class="btn-custom">Switch Theme</button>
-    <button class="btn-custom" onclick="openQR()">Donate / QR</button>
+    <button class="btn-custom" onclick="openQR()">Buy Me A Coffee ☕</button>
 </div>
 
 </div>
@@ -406,11 +406,9 @@ allowfullscreen>
 
 </div>
 
-<!-- Modal hiển thị QR -->
 <div class="qr-modal" id="qrModal" onclick="closeQR(event)">
     <div class="qr-content">
         <h3>Buy Me A Coffee ☕</h3>
-        <!-- Bạn hãy thay link ảnh QR bên dưới bằng link QR ngân hàng/MoMo của bạn -->
         <img src="https://files.catbox.moe/qbbsk9.png" alt="QR Code">
         <p style="font-size: 13px; color: #cbd5e1;">Thank you so much! ❤️</p>
         <button class="qr-close" onclick="forceCloseQR()">Close</button>
@@ -578,13 +576,12 @@ setInterval(createHeart,500)
 
 const themeBtn=document.getElementById("themeBtn")
 let themeActive=false
-let videoBg=null
+let gifBg=null
 
 themeBtn.addEventListener("click",()=>{
 const isMobile = window.innerWidth <= 768;
 
 if(isMobile) {
-    // Trên điện thoại: Dùng hiệu ứng fade nhẹ nhàng siêu mượt
     const container = document.querySelector(".container");
     container.style.opacity = "0";
     
@@ -593,7 +590,6 @@ if(isMobile) {
         container.style.opacity = "1";
     }, 250);
 } else {
-    // Trên máy tính: Dùng đầy đủ hiệu ứng giọt nước + blur
     const ripple = document.createElement("div");
     ripple.className = "full-ripple";
     document.body.appendChild(ripple);
@@ -623,23 +619,19 @@ avatar.src="https://files.catbox.moe/prr0a8.gif"
 
 banner.style.backgroundImage="url('https://files.catbox.moe/7ixpch.gif')"
 
-videoBg=document.createElement("video")
+/* Tạo thẻ div chứa ảnh GIF nền thay cho video */
+gifBg=document.createElement("div")
+gifBg.style.position="fixed"
+gifBg.style.top="0"
+gifBg.style.left="0"
+gifBg.style.width="100%"
+gifBg.style.height="100%"
+gifBg.style.backgroundImage="url('https://files.catbox.moe/tv7b4d.gif')"
+gifBg.style.backgroundSize="cover"
+gifBg.style.backgroundPosition="center"
+gifBg.style.zIndex="-2"
 
-videoBg.src="https://files.catbox.moe/tv7b4d.gif"
-
-videoBg.autoplay=true
-videoBg.loop=true
-videoBg.muted=true
-
-videoBg.style.position="fixed"
-videoBg.style.top="0"
-videoBg.style.left="0"
-videoBg.style.width="100%"
-videoBg.style.height="100%"
-videoBg.style.objectFit="cover"
-videoBg.style.zIndex="-2"
-
-document.body.appendChild(videoBg)
+document.body.appendChild(gifBg)
 
 themeActive=true
 
@@ -649,9 +641,9 @@ avatar.src="https://files.catbox.moe/xwlv3d.gif"
 
 banner.style.backgroundImage='url("https://files.catbox.moe/wn9u5w.gif")'
 
-if(videoBg){
-videoBg.remove()
-videoBg=null
+if(gifBg){
+gifBg.remove()
+gifBg=null
 }
 
 themeActive=false

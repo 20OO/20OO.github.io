@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>raven</title>
 
 <style>
@@ -294,6 +295,25 @@ opacity:1;
 transform:scale(1);
 }
 
+}
+
+/* Tối ưu hóa giao diện cho điện thoại hoặc màn hình nhỏ */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        overflow: auto; /* Cho phép cuộn trang nếu nội dung dài hơn màn hình */
+        padding: 30px 0;
+    }
+
+    .container {
+        flex-direction: column; /* Đưa 2 card xếp dọc thay vì nằm ngang */
+        gap: 20px;
+    }
+
+    .card, .video-card {
+        width: 90vw; /* Co giãn theo màn hình điện thoại */
+        max-width: 320px;
+    }
 }
 
 </style>

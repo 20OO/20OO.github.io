@@ -38,6 +38,7 @@ animation:bg 12s ease infinite;
 display:flex;
 gap:40px;
 align-items:center;
+transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .card{
@@ -49,6 +50,7 @@ background:rgba(255,255,255,0.05);
 border-radius:20px;
 
 backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
 border:1px solid rgba(255,255,255,0.1);
 
 box-shadow:0 20px 40px rgba(0,0,0,0.6);
@@ -62,6 +64,7 @@ will-change:transform;
 height:120px;
 background:url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif") center/cover;
 border-radius:14px;
+transition: background 0.3s ease;
 }
 
 .avatar{
@@ -71,7 +74,7 @@ border-radius:50%;
 border:4px solid white;
 margin-top:-55px;
 
-transition:all .25s ease;
+transition:all .3s ease;
 cursor:pointer;
 }
 
@@ -142,12 +145,9 @@ transition:all .25s;
 }
 
 .music:hover{
-
 transform:translateY(-3px) scale(1.05);
 background:rgba(255,255,255,0.2);
-
 box-shadow:0 10px 20px rgba(0,0,0,.5);
-
 }
 
 .theme-btn{
@@ -163,12 +163,9 @@ transition:all .25s;
 }
 
 .theme-btn:hover{
-
 transform:translateY(-3px) scale(1.05);
 background:rgba(255,255,255,0.2);
-
 box-shadow:0 10px 20px rgba(0,0,0,.5);
-
 }
 
 .trail{
@@ -195,17 +192,14 @@ opacity:0.8;
 }
 
 @keyframes floatUp{
-
 0%{
 transform:translateY(0) scale(1);
 opacity:0.9;
 }
-
 100%{
 transform:translateY(-110vh) scale(1.5);
 opacity:0;
 }
-
 }
 
 /* loader */
@@ -235,83 +229,35 @@ color:white;
 opacity:0.8;
 }
 
-/* ripple */
-
-.full-ripple{
-position:fixed;
-left:50%;
-top:50%;
-
-width:20px;
-height:20px;
-
-border-radius:50%;
-background:white;
-
-transform:translate(-50%,-50%) scale(0);
-
-animation:fullRipple 1s ease-out forwards;
-
-z-index:9998;
-pointer-events:none;
-}
-
-@keyframes fullRipple{
-
-0%{
-transform:translate(-50%,-50%) scale(0);
-opacity:0.9;
-}
-
-100%{
-transform:translate(-50%,-50%) scale(120);
-opacity:0;
-}
-
-}
-
-/* blur transition */
-
-.blur-transition{
-filter:blur(15px);
-transition:filter .6s ease;
-}
-
-/* fade */
-
-.fade-theme{
-animation:themeFade .8s ease;
-}
-
-@keyframes themeFade{
-
-from{
-opacity:0;
-transform:scale(.98);
-}
-
-to{
-opacity:1;
-transform:scale(1);
-}
-
+/* Video nền ẩn chạy sẵn để mượt */
+#bgVideo {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: -2;
+opacity: 0;
+transition: opacity 0.5s ease;
+pointer-events: none;
 }
 
 /* Tối ưu hóa giao diện cho điện thoại hoặc màn hình nhỏ */
 @media (max-width: 768px) {
     body {
         height: auto;
-        overflow: auto; /* Cho phép cuộn trang nếu nội dung dài hơn màn hình */
+        overflow: auto;
         padding: 30px 0;
     }
 
     .container {
-        flex-direction: column; /* Đưa 2 card xếp dọc thay vì nằm ngang */
+        flex-direction: column;
         gap: 20px;
     }
 
     .card, .video-card {
-        width: 90vw; /* Co giãn theo màn hình điện thoại */
+        width: 90vw;
         max-width: 320px;
     }
 }
@@ -324,6 +270,9 @@ transform:scale(1);
 <div id="loader">
 <div class="loader-text">enter</div>
 </div>
+
+<!-- Tạo sẵn thẻ video ẩn để tải trước -->
+<video id="bgVideo" src="https://moewalls.com/wp-content/uploads/preview/2026/mornye-galaxy-stars-wuthering-waves-preview.webm" autoplay loop muted preload="auto"></video>
 
 <div class="container">
 
@@ -522,79 +471,40 @@ heart.remove()
 
 setInterval(createHeart,500)
 
-/* theme switch */
+/* theme switch cực mượt */
 
 const themeBtn=document.getElementById("themeBtn")
-
-let themeActive=false
-let videoBg=null
-
-themeBtn.addEventListener("click",()=>{
-
-const ripple=document.createElement("div")
-ripple.className="full-ripple"
-document.body.appendChild(ripple)
-
-document.body.classList.add("blur-transition")
-
-setTimeout(toggleTheme,400)
-
-setTimeout(()=>{
-document.body.classList.remove("blur-transition")
-},900)
-
-})
-
-function toggleTheme(){
-
 const container=document.querySelector(".container")
 const avatar=document.querySelector(".avatar")
 const banner=document.querySelector(".banner")
+const bgVideo=document.getElementById("bgVideo")
 
-container.classList.add("fade-theme")
+let themeActive=false
 
-if(!themeActive){
+themeBtn.addEventListener("click",()=>{
+// Hiệu ứng mờ nhẹ container để chuyển cảnh mượt mà
+container.style.opacity="0"
+container.style.transform="scale(0.97)"
 
-avatar.src="https://i.pinimg.com/originals/a6/b6/8e/a6b68e1b5f7ffe5d793d4812414a8499.gif"
+setTimeout(()=>{
+    if(!themeActive){
+        avatar.src="https://i.pinimg.com/originals/a6/b6/8e/a6b68e1b5f7ffe5d793d4812414a8499.gif"
+        banner.style.backgroundImage="url('https://i.pinimg.com/originals/a4/82/c8/a482c8ae90349b9942330715b300599f.gif')"
+        bgVideo.style.opacity="1" // Hiện video nền đã load sẵn
+        themeActive=true
+    }else{
+        avatar.src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif"
+        banner.style.backgroundImage='url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif")'
+        bgVideo.style.opacity="0" // Ẩn video nền đi
+        themeActive=false
+    }
+    
+    // Hiện lại container với hiệu ứng trượt nhẹ vào
+    container.style.opacity="1"
+    container.style.transform="scale(1)"
+}, 250)
 
-banner.style.backgroundImage="url('https://i.pinimg.com/originals/a4/82/c8/a482c8ae90349b9942330715b300599f.gif')"
-
-videoBg=document.createElement("video")
-
-videoBg.src="https://moewalls.com/wp-content/uploads/preview/2026/mornye-galaxy-stars-wuthering-waves-preview.webm"
-
-videoBg.autoplay=true
-videoBg.loop=true
-videoBg.muted=true
-
-videoBg.style.position="fixed"
-videoBg.style.top="0"
-videoBg.style.left="0"
-videoBg.style.width="100%"
-videoBg.style.height="100%"
-videoBg.style.objectFit="cover"
-videoBg.style.zIndex="-2"
-
-document.body.appendChild(videoBg)
-
-themeActive=true
-
-}else{
-
-avatar.src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif"
-
-banner.style.backgroundImage='url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif")'
-
-if(videoBg){
-videoBg.remove()
-videoBg=null
-}
-
-themeActive=false
-
-}
-
-}
+})
 
 </script>
 

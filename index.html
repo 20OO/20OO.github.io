@@ -38,7 +38,7 @@ animation:bg 12s ease infinite;
 display:flex;
 gap:40px;
 align-items:center;
-transition: opacity 0.4s ease, transform 0.4s ease;
+transition: opacity 0.3s ease;
 }
 
 .card{
@@ -64,7 +64,6 @@ will-change:transform;
 height:120px;
 background:url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif") center/cover;
 border-radius:14px;
-transition: background 0.3s ease;
 }
 
 .avatar{
@@ -229,7 +228,6 @@ color:white;
 opacity:0.8;
 }
 
-/* Video nền ẩn chạy sẵn để mượt */
 #bgVideo {
 position: fixed;
 top: 0;
@@ -239,11 +237,11 @@ height: 100%;
 object-fit: cover;
 z-index: -2;
 opacity: 0;
-transition: opacity 0.5s ease;
+transition: opacity 0.4s ease;
 pointer-events: none;
 }
 
-/* Tối ưu hóa giao diện cho điện thoại hoặc màn hình nhỏ */
+/* Tối ưu hóa cực mạnh cho điện thoại: Tắt backdrop-filter nặng nề để hết giật lag */
 @media (max-width: 768px) {
     body {
         height: auto;
@@ -259,6 +257,14 @@ pointer-events: none;
     .card, .video-card {
         width: 90vw;
         max-width: 320px;
+        backdrop-filter: none !important; /* Tắt blur trên điện thoại cho mượt */
+        -webkit-backdrop-filter: none !important;
+        background: rgba(15, 23, 42, 0.9) !important; /* Dùng màu đặc thay thế */
+    }
+
+    /* Ẩn bớt vệt sáng chuột và tim bay trên điện thoại vì màn cảm ứng không cần thiết và gây tốn pin/lag */
+    .trail {
+        display: none;
     }
 }
 
@@ -271,7 +277,6 @@ pointer-events: none;
 <div class="loader-text">enter</div>
 </div>
 
-<!-- Tạo sẵn thẻ video ẩn để tải trước -->
 <video id="bgVideo" src="https://moewalls.com/wp-content/uploads/preview/2026/mornye-galaxy-stars-wuthering-waves-preview.webm" autoplay loop muted preload="auto"></video>
 
 <div class="container">
@@ -320,25 +325,17 @@ allowfullscreen>
 
 <script>
 
-/* loader */
-
 const loader=document.getElementById("loader")
 const music=document.getElementById("music")
 
 loader.addEventListener("click",()=>{
-
 music.volume=0.6
 music.play()
-
 loader.style.opacity="0"
-
 setTimeout(()=>{
 loader.style.display="none"
 },600)
-
 })
-
-/* typing bio */
 
 const texts=[
 "Love fades, memories don't.",
@@ -347,132 +344,87 @@ const texts=[
 ]
 
 const bio=document.getElementById("bio")
-
 let textIndex=0
 let charIndex=0
 
 function typeText(){
-
 if(charIndex<texts[textIndex].length){
-
 bio.innerHTML+=texts[textIndex].charAt(charIndex)
 charIndex++
-
 setTimeout(typeText,60)
-
 }else{
-
 setTimeout(()=>{
-
 bio.innerHTML=""
 charIndex=0
 textIndex=(textIndex+1)%texts.length
 typeText()
-
 },20000)
-
 }
-
 }
-
 typeText()
 
-/* music */
-
 function toggleMusic(){
-
 if(music.paused){
 music.play()
 }else{
 music.pause()
 }
-
 }
 
-/* tilt */
-
+// Chỉ bật hiệu ứng nghiêng tilt khi dùng máy tính (màn hình lớn)
+if(window.innerWidth > 768){
 const cards=document.querySelectorAll(".tilt")
-
 document.addEventListener("mousemove",(e)=>{
-
 const x=(window.innerWidth/2 - e.pageX)/30
 const y=(window.innerHeight/2 - e.pageY)/30
-
 cards.forEach(card=>{
 card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
 })
-
 })
 
-/* cursor trail */
-
+// Cursor trail chỉ chạy trên PC
 const dots=[]
-
 for(let i=0;i<18;i++){
-
 const d=document.createElement("div")
 d.className="trail"
 document.body.appendChild(d)
-
 dots.push({x:0,y:0,el:d})
-
 }
-
-let mouseX=0
-let mouseY=0
-
+let mouseX=0, mouseY=0
 document.addEventListener("mousemove",(e)=>{
 mouseX=e.clientX
 mouseY=e.clientY
 })
-
 function animate(){
-
-let x=mouseX
-let y=mouseY
-
+let x=mouseX, y=mouseY
 dots.forEach(dot=>{
-
 dot.x+=(x-dot.x)*0.25
 dot.y+=(y-dot.y)*0.25
-
 dot.el.style.left=dot.x+"px"
 dot.el.style.top=dot.y+"px"
-
 x=dot.x
 y=dot.y
-
 })
-
 requestAnimationFrame(animate)
-
+}
+animate()
 }
 
-animate()
-
-/* hearts */
-
+// Hiệu ứng tim bay
 function createHeart(){
-
 const heart=document.createElement("div")
 heart.className="heart"
 heart.innerHTML="❤"
-
 heart.style.left=Math.random()*100+"vw"
 heart.style.animationDuration=(4+Math.random()*4)+"s"
-
 document.body.appendChild(heart)
-
 setTimeout(()=>{
 heart.remove()
 },8000)
-
 }
+setInterval(createHeart, 800) // Giảm tần suất tim bay một chút để nhẹ máy hơn
 
-setInterval(createHeart,500)
-
-/* theme switch cực mượt */
-
+/* Đổi theme cực mượt trên cả điện thoại */
 const themeBtn=document.getElementById("themeBtn")
 const container=document.querySelector(".container")
 const avatar=document.querySelector(".avatar")
@@ -482,27 +434,22 @@ const bgVideo=document.getElementById("bgVideo")
 let themeActive=false
 
 themeBtn.addEventListener("click",()=>{
-// Hiệu ứng mờ nhẹ container để chuyển cảnh mượt mà
 container.style.opacity="0"
-container.style.transform="scale(0.97)"
 
 setTimeout(()=>{
     if(!themeActive){
         avatar.src="https://i.pinimg.com/originals/a6/b6/8e/a6b68e1b5f7ffe5d793d4812414a8499.gif"
         banner.style.backgroundImage="url('https://i.pinimg.com/originals/a4/82/c8/a482c8ae90349b9942330715b300599f.gif')"
-        bgVideo.style.opacity="1" // Hiện video nền đã load sẵn
+        bgVideo.style.opacity="1"
         themeActive=true
     }else{
         avatar.src="https://images-ext-1.discordapp.net/external/BrcDJVHUiTib88-lAwaps2G8teb9efdavWsLr7y6Kb8/https/i.pinimg.com/originals/41/b0/58/41b0589ec63f348d427d502131b93cd2.gif"
         banner.style.backgroundImage='url("https://images-ext-1.discordapp.net/external/9XROBbLqb4wynjLkhHHFmAsWv73ROa7NERu6eWLI-Tw/https/i.pinimg.com/originals/1b/83/3c/1b833c993c0f583e0b2bc3de2231fa24.gif")'
-        bgVideo.style.opacity="0" // Ẩn video nền đi
+        bgVideo.style.opacity="0"
         themeActive=false
     }
-    
-    // Hiện lại container với hiệu ứng trượt nhẹ vào
     container.style.opacity="1"
-    container.style.transform="scale(1)"
-}, 250)
+}, 200)
 
 })
 

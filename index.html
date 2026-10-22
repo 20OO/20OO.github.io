@@ -4,58 +4,93 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#09070d">
-<meta name="description" content="Raven — a personal corner of the internet.">
-<title>Raven — Into the Void</title>
+<meta name="description" content="Raven — Secret Archive. Classified logs, cryptic interactive terminal, and cinematic visuals.">
+<title>Raven — Secret Archive // Classified Void</title>
 <style>
 :root{
   color-scheme:dark;
-  --bg:#09070d; --panel:rgba(19,14,24,.76); --panel-strong:rgba(14,10,18,.94);
+  --bg:#08060c; --panel:rgba(18,13,23,.78); --panel-strong:rgba(12,8,16,.96);
   --text:#f5edf8; --muted:#b7aaba; --accent:#c7a4d8; --accent-rgb:199,164,216;
-  --line:rgba(223,199,235,.17); --shadow:0 24px 80px rgba(0,0,0,.48);
+  --line:rgba(223,199,235,.18); --shadow:0 24px 80px rgba(0,0,0,.55);
   --radius:22px; --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --glitch-red: rgba(255, 60, 100, 0.8);
+  --glitch-cyan: rgba(0, 230, 255, 0.8);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0; min-height:100vh; color:var(--text);
   background:
-    radial-gradient(ellipse at 18% 12%,rgba(var(--accent-rgb),.12),transparent 34%),
-    radial-gradient(ellipse at 88% 82%,rgba(71,46,91,.20),transparent 35%),var(--bg);
+    radial-gradient(ellipse at 18% 12%,rgba(var(--accent-rgb),.15),transparent 34%),
+    radial-gradient(ellipse at 88% 82%,rgba(71,46,91,.24),transparent 38%),var(--bg);
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   overflow-x:hidden;
+  transition: background 0.5s ease;
 }
 body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;
   background-image:url("https://www.transparenttextures.com/patterns/stardust.png");
 }
+
+/* Mouse Interactive Glow Light */
+.cursor-light{
+  position:fixed;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--accent-rgb), 0.08), transparent 60%);
+  transition:opacity 0.3s ease;
+}
+
 button,a{font:inherit}
 button{color:inherit}
 a{color:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 ::selection{background:var(--accent);color:#100b14}
+
 #particleCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
 .noise{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
-.site-shell{width:min(1120px,calc(100% - 36px));margin:0 auto;padding:22px 0 52px}
+
+/* CRT Scanline Overlay Effect for Archive aesthetic */
+.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:4;
+  background:linear-gradient(rgba(18,16,26,0) 50%, rgba(0,0,0,0.25) 50%);
+  background-size:100% 4px;
+  opacity:0.35;
+}
+
+.site-shell{width:min(1120px,calc(100% - 36px));margin:0 auto;padding:22px 0 52px;position:relative;z-index:6}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:32px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;letter-spacing:.18em;font:600 12px var(--mono);text-transform:uppercase}
-.brand-mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:var(--accent);box-shadow:0 0 24px rgba(var(--accent-rgb),.14)}
+.brand-mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:var(--accent);box-shadow:0 0 24px rgba(var(--accent-rgb),.14);transition:transform 0.4s ease}
+.brand:hover .brand-mark{transform:rotate(180deg) scale(1.1);border-color:var(--accent)}
 .top-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .icon-btn,.pill-btn,.social-link,.project-link{
   border:1px solid var(--line);background:rgba(255,255,255,.035);text-decoration:none;
-  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+  transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .25s ease,background .25s ease, box-shadow .25s ease;
 }
 .icon-btn,.pill-btn{cursor:pointer}
-.icon-btn:hover,.pill-btn:hover,.social-link:hover,.project-link:hover{transform:translateY(-2px);border-color:rgba(var(--accent-rgb),.65);background:rgba(var(--accent-rgb),.08)}
+.icon-btn:hover,.pill-btn:hover,.social-link:hover,.project-link:hover{
+  transform:translateY(-3px);
+  border-color:rgba(var(--accent-rgb),.65);
+  background:rgba(var(--accent-rgb),.1);
+  box-shadow:0 8px 30px rgba(var(--accent-rgb),.18);
+}
 .icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:16px}
 .pill-btn{border-radius:999px;padding:10px 14px;font-size:12px;letter-spacing:.04em}
+
 .hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);gap:24px;align-items:stretch}
-.glass{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--shadow)}
+.glass{
+  border:1px solid var(--line);background:var(--panel);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+  transition:transform 0.4s cubic-bezier(.16,1,.3,1), border-color 0.3s ease;
+}
+.glass:hover{border-color:rgba(var(--accent-rgb),.38)}
 .profile-card{border-radius:var(--radius);overflow:hidden;position:relative}
 .banner{height:172px;background:#15101a url("https://files.catbox.moe/wn9u5w.gif") center 42%/cover no-repeat;position:relative}
 .banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,3,8,.04),rgba(9,7,13,.82))}
 .profile-content{padding:0 28px 28px;position:relative}
 .avatar-wrap{width:112px;height:112px;margin-top:-58px;position:relative;z-index:1}
-.avatar{width:112px;height:112px;object-fit:cover;border-radius:50%;border:4px solid #100b14;box-shadow:0 0 0 1px var(--line),0 0 34px rgba(var(--accent-rgb),.23);background:#120d16}
+.avatar{width:112px;height:112px;object-fit:cover;border-radius:50%;border:4px solid #100b14;box-shadow:0 0 0 1px var(--line),0 0 34px rgba(var(--accent-rgb),.23);background:#120d16;transition:transform .4s ease}
+.avatar:hover{transform:scale(1.05) rotate(2deg)}
 .online-dot{position:absolute;right:7px;bottom:7px;width:15px;height:15px;border-radius:50%;background:#8ac7a1;border:3px solid #100b14;box-shadow:0 0 12px rgba(138,199,161,.4)}
 .kicker{font:11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 .name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
@@ -72,29 +107,38 @@ h1{font-size:clamp(32px,5vw,48px);letter-spacing:-.055em;line-height:1;margin:0;
 .external{color:var(--muted);font-size:12px}
 .card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .card-actions .pill-btn{flex:1;min-width:100px}
+
 .status-card{border-radius:var(--radius);padding:25px;display:flex;flex-direction:column;gap:22px;min-height:100%}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .section-title{margin:0;font-size:13px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
 .live-label{display:flex;align-items:center;gap:7px;color:#9ac9a9;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.live-label::before{content:"";width:6px;height:6px;background:#9ac9a9;border-radius:50%;box-shadow:0 0 10px #9ac9a9}
+.live-label::before{content:"";width:6px;height:6px;background:#9ac9a9;border-radius:50%;box-shadow:0 0 10px #9ac9a9;animation:pulseLive 2s infinite}
+@keyframes pulseLive{0%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.4}100%{transform:scale(1);opacity:1}}
 .status-intro{font-size:clamp(22px,3vw,30px);line-height:1.25;letter-spacing:-.04em;margin:0;max-width:360px}
-.status-intro em{font-style:normal;color:var(--accent)}
+.status-intro em{font-style:normal;color:var(--accent);text-shadow:0 0 20px rgba(var(--accent-rgb),.4)}
 .status-note{color:var(--muted);font-size:13px;line-height:1.7;margin:-10px 0 0}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{padding:14px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025);min-width:0}
+.stat{padding:14px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025);min-width:0;transition:border-color .2s}
+.stat:hover{border-color:rgba(var(--accent-rgb),.4)}
 .stat-label{font:10px var(--mono);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
 .stat-value{margin-top:9px;font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stat-value.small{font-size:13px}
-.music-panel{border:1px solid var(--line);border-radius:15px;padding:13px;display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:12px;background:rgba(0,0,0,.15)}
-.album-art{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(var(--accent-rgb),.28),rgba(30,17,37,.7));border:1px solid var(--line);font-size:20px}
+
+.music-panel{border:1px solid var(--line);border-radius:15px;padding:13px;display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:12px;background:rgba(0,0,0,.25);position:relative;overflow:hidden}
+.music-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.05),transparent);transform:translateX(-100%);animation:shinePanel 6s infinite}
+@keyframes shinePanel{100%{transform:translateX(100%)}}
+.album-art{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(var(--accent-rgb),.28),rgba(30,17,37,.7));border:1px solid var(--line);font-size:20px;transition:transform 0.3s}
+.music-panel:hover .album-art{transform:rotate(10deg) scale(1.05)}
 .track-title{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .track-subtitle{margin-top:5px;color:var(--muted);font-size:11px}
-.play-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(var(--accent-rgb),.12);cursor:pointer}
-.visualizer{height:22px;display:flex;align-items:center;gap:3px;margin-top:9px;opacity:.7}
+.play-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(var(--accent-rgb),.12);cursor:pointer;transition:all .2s}
+.play-btn:hover{background:var(--accent);color:#100b14;transform:scale(1.1)}
+.visualizer{height:22px;display:flex;align-items:center;gap:3px;margin-top:9px;opacity:.85}
 .visualizer span{display:block;width:3px;height:4px;border-radius:5px;background:var(--accent);transition:height .08s linear}
 .visualizer.playing span{animation:wave .75s ease-in-out infinite alternate}
 .visualizer.playing span:nth-child(3n){animation-delay:-.5s}.visualizer.playing span:nth-child(2n){animation-delay:-.25s}
-@keyframes wave{from{height:3px}to{height:17px}}
+@keyframes wave{from{height:3px}to{height:20px}}
+
 .section{margin-top:54px}
 .section-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:17px}
 .eyebrow{font:10px var(--mono);color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:9px}
@@ -102,7 +146,8 @@ h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.04em;margin:0}
 .section-description{font-size:13px;color:var(--muted);line-height:1.6;max-width:440px;margin:0}
 .project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .project-card{border-radius:17px;padding:20px;min-height:205px;display:flex;flex-direction:column;align-items:flex-start}
-.project-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(var(--accent-rgb),.1);border:1px solid var(--line);color:var(--accent);font-size:18px}
+.project-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(var(--accent-rgb),.1);border:1px solid var(--line);color:var(--accent);font-size:18px;transition:transform .3s}
+.project-card:hover .project-icon{transform:scale(1.1) rotate(-5deg)}
 .project-card h3{margin:19px 0 8px;font-size:16px}
 .project-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}
 .project-meta{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%}
@@ -112,39 +157,64 @@ h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.04em;margin:0}
 .feature-card{border-radius:17px;padding:19px}
 .feature-card h3{margin:0 0 9px;font-size:14px}
 .feature-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}
-.video-wrap{position:relative;overflow:hidden;border-radius:13px;margin-top:14px;aspect-ratio:16/9;background:#08060b}
+.video-wrap{position:relative;overflow:hidden;border-radius:13px;margin-top:14px;aspect-ratio:16/9;background:#08060b;border:1px solid var(--line)}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Secret Archive Encrypted Card */
+.classified-box{
+  border:1px dashed rgba(var(--accent-rgb),.4);
+  background:rgba(10,6,15,.6);
+  border-radius:12px; padding:12px; margin-top:12px;
+  font-family:var(--mono); font-size:11px; color:var(--accent);
+}
+.classified-box .cl-status{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:6px;font-size:10px}
+
 .footer{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:55px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font:10px var(--mono);letter-spacing:.07em}
 .footer strong{color:var(--accent);font-weight:500}
-.overlay{position:fixed;inset:0;z-index:20;background:rgba(3,2,5,.76);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+
+.overlay{position:fixed;inset:0;z-index:20;background:rgba(3,2,5,.82);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .overlay.open{display:flex}
-.modal{width:min(620px,100%);max-height:min(78vh,720px);overflow:auto;background:var(--panel-strong);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.modal{width:min(620px,100%);max-height:min(78vh,720px);overflow:auto;background:var(--panel-strong);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);transform:translateY(10px);animation:slideUp .25s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes slideUp{to{transform:translateY(0)}}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
 .modal-head h2{font:12px var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.close-btn{width:32px;height:32px;border:1px solid var(--line);background:transparent;border-radius:9px;cursor:pointer}
+.close-btn{width:32px;height:32px;border:1px solid var(--line);background:transparent;border-radius:99px;cursor:pointer;transition:background .2s;display:grid;place-items:center}
+.close-btn:hover{background:rgba(var(--accent-rgb),.2)}
+
 .terminal-body{padding:18px;font:12px/1.8 var(--mono);color:#d8cce0}
 .terminal-welcome{color:var(--muted);margin-bottom:12px}
 .terminal-line{white-space:pre-wrap;overflow-wrap:anywhere}
 .terminal-line .prompt{color:var(--accent)}
+.terminal-line .error{color:#f87171}
+.terminal-line .success{color:#34d399}
+.terminal-line .secret{color:#f472b6;font-weight:bold}
 .terminal-form{display:flex;align-items:center;gap:8px;margin-top:12px}
 .terminal-form label{color:var(--accent)}
 .terminal-form input{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font:inherit;outline:none}
 .terminal-hint{color:#8d7d94;font-size:10px;margin-top:12px}
+
 .qr-body{text-align:center;padding:22px}
-.qr-body img{display:block;width:min(200px,70%);aspect-ratio:1;object-fit:cover;border-radius:12px;margin:15px auto;border:1px solid var(--line)}
+.qr-body img{display:block;width:min(200px,70%);aspect-ratio:1;object-fit:cover;border-radius:12px;margin:15px auto;border:1px solid var(--line);box-shadow:0 0 25px rgba(var(--accent-rgb),.2)}
 .qr-body p{color:var(--muted);font-size:12px}
+
 .theme-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:18px}
-.theme-option{border:1px solid var(--line);border-radius:12px;padding:13px 10px;background:rgba(255,255,255,.025);cursor:pointer;text-align:left}
-.theme-option[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.theme-option{border:1px solid var(--line);border-radius:12px;padding:13px 10px;background:rgba(255,255,255,.025);cursor:pointer;text-align:left;transition:all .2s}
+.theme-option:hover{border-color:rgba(var(--accent-rgb),.6);background:rgba(var(--accent-rgb),.05)}
+.theme-option[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent), 0 0 15px rgba(var(--accent-rgb),.2)}
 .theme-swatch{height:38px;border-radius:7px;margin-bottom:10px;background:linear-gradient(135deg,#0b080f,#543b61)}
 .theme-option:nth-child(2) .theme-swatch{background:linear-gradient(135deg,#05070d,#243c50)}
 .theme-option:nth-child(3) .theme-swatch{background:linear-gradient(135deg,#14080d,#6b2638)}
 .theme-option strong{display:block;font-size:12px}.theme-option small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;pointer-events:none;z-index:30;border:1px solid var(--line);background:var(--panel-strong);padding:10px 14px;border-radius:999px;font:11px var(--mono);transition:opacity .2s,transform .2s}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;pointer-events:none;z-index:30;border:1px solid var(--line);background:var(--panel-strong);padding:10px 14px;border-radius:999px;font:11px var(--mono);transition:opacity .2s,transform .2s;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+
 body.theme-void{--bg:#070a10;--panel:rgba(10,16,24,.78);--panel-strong:rgba(7,11,17,.97);--accent:#9bc9e7;--accent-rgb:155,201,231}
 body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,6,10,.97);--accent:#e2a1ad;--accent-rgb:226,161,173}
+
 @media(max-width:850px){.hero{grid-template-columns:1fr}.status-card{min-height:auto}.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.project-card:last-child{grid-column:span 2}}
 @media(max-width:560px){
  .site-shell{width:min(100% - 22px,480px);padding-top:12px}
@@ -159,11 +229,14 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
 </style>
 </head>
 <body>
+<div class="cursor-light" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
 <canvas id="particleCanvas" aria-hidden="true"></canvas>
 <div class="noise" aria-hidden="true"></div>
+
 <div class="site-shell">
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="Raven home"><span class="brand-mark">R</span><span>RAVEN / PERSONAL ARCHIVE</span></a>
+    <a class="brand" href="#home" aria-label="Raven home"><span class="brand-mark">R</span><span>RAVEN / SECRET ARCHIVE</span></a>
     <nav class="top-actions" aria-label="Quick actions">
       <button class="icon-btn" id="openTerminal" aria-label="Open secret terminal" title="Secret terminal (~)">⌘</button>
       <button class="icon-btn" id="openThemes" aria-label="Choose theme" title="Change theme">◐</button>
@@ -182,7 +255,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
             <span class="online-dot" aria-label="Page active"></span>
           </div>
           <div class="kicker" style="margin-top:18px">Somewhere between dreams and static</div>
-          <div class="name-row"><h1>raven</h1><span class="verified">PERSONAL</span></div>
+          <div class="name-row"><h1>raven</h1><span class="verified">ARCHIVE ACTIVE</span></div>
           <p class="bio"><span id="bioText">Love fades, memories don't.</span><span class="caret" aria-hidden="true"></span></p>
           <div class="divider"></div>
           <div class="section-head" style="margin-bottom:12px"><h2 class="section-title">Find me elsewhere</h2><span class="kicker">01 / LINKS</span></div>
@@ -200,15 +273,21 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
       </article>
 
       <aside class="status-card glass" aria-label="Live status">
-        <div class="section-head"><h2 class="section-title">System status</h2><span class="live-label">ACTIVE</span></div>
-        <p class="status-intro">A quiet place for <em>strange thoughts</em> and unfinished things.</p>
-        <p class="status-note">Not everything needs to be explained. Some things are better left in the dark.</p>
+        <div class="section-head"><h2 class="section-title">System status</h2><span class="live-label">ARCHIVE ENCRYPTED</span></div>
+        <p class="status-intro">A quiet place for <em>strange thoughts</em> and hidden logs.</p>
+        <p class="status-note">Explore the hidden terminal puzzles to decrypt secret archive files.</p>
         <div class="stat-grid">
           <div class="stat"><div class="stat-label">Local time</div><div class="stat-value" id="localTime">--:--:--</div></div>
           <div class="stat"><div class="stat-label">Session</div><div class="stat-value" id="sessionTime">00:00:00</div></div>
           <div class="stat"><div class="stat-label">Current mode</div><div class="stat-value small" id="currentTheme">DARK GOTHIC</div></div>
-          <div class="stat"><div class="stat-label">Signal</div><div class="stat-value small" id="signalState">STABLE / LOCAL</div></div>
+          <div class="stat"><div class="stat-label">Decrypted Logs</div><div class="stat-value small" id="unlockedCount">0 / 3 UNLOCKED</div></div>
         </div>
+
+        <div class="classified-box">
+          <div class="cl-status"><span>ENCRYPTED MEMORY #001</span><span>[LOCKED]</span></div>
+          <div id="classifiedPreview">Hint: Find the cipher key in the terminal with command `puzzle`.</div>
+        </div>
+
         <div>
           <div class="section-head" style="margin-bottom:12px"><h2 class="section-title">Soundtrack</h2><span class="kicker">02 / AUDIO</span></div>
           <div class="music-panel">
@@ -230,23 +309,23 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
     <section class="section" id="projects">
       <div class="section-heading">
         <div><div class="eyebrow">03 / Things in progress</div><h2>Projects from the shadows</h2></div>
-        <p class="section-description">A small archive of ideas, experiments and things worth building. More will appear when they're ready.</p>
+        <p class="section-description">A small archive of ideas, experiments and hidden secrets. Type terminal commands to decrypt more.</p>
       </div>
       <div class="project-grid">
         <article class="project-card glass">
-          <div class="project-icon">⌘</div><h3>Raven's terminal</h3>
-          <p>A tiny command-line easter egg hidden inside this page. Try <code>help</code>, <code>about</code>, or <code>theme</code>.</p>
-          <div class="project-meta"><span class="tag">JAVASCRIPT</span><button class="project-link" data-open-terminal>Open terminal ↗</button></div>
+          <div class="project-icon">⌘</div><h3>Raven's Terminal</h3>
+          <p>An interactive cipher terminal. Commands: <code>help</code>, <code>puzzle</code>, <code>logs</code>, <code>unlock</code>.</p>
+          <div class="project-meta"><span class="tag">CLASSIFIED</span><button class="project-link" data-open-terminal>Open terminal ↗</button></div>
         </article>
         <article class="project-card glass">
-          <div class="project-icon">◉</div><h3>Visual experiments</h3>
-          <p>Motion, light, glass surfaces and atmospheric details made with browser-native code.</p>
+          <div class="project-icon">◉</div><h3>Audio-Visual Matrix</h3>
+          <p>Cinematic audio reactivity and particle constellation physics reacting to music and cursor.</p>
           <div class="project-meta"><span class="tag">CREATIVE CODE</span><a class="project-link" href="#soundtrack">Explore ↓</a></div>
         </article>
         <article class="project-card glass">
-          <div class="project-icon">◇</div><h3>Game dev notes</h3>
-          <p>A work-in-progress corner for game ideas, prototypes and experiments with interactive worlds.</p>
-          <div class="project-meta"><span class="tag">IN PROGRESS</span><span class="tag">WIP</span></div>
+          <div class="project-icon">◇</div><h3>Secret Archives</h3>
+          <p>Decryption logs hidden behind cryptic locks. Solve terminal riddles to read Raven's notes.</p>
+          <div class="project-meta"><span class="tag">LOCKED LOGS</span><button class="project-link" data-open-terminal>Solve Riddles ↗</button></div>
         </article>
       </div>
     </section>
@@ -263,26 +342,26 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
         </article>
         <article class="feature-card glass">
           <h3>A note from Raven</h3>
-          <p>This page is a personal space, not a live activity tracker. The clock and session counter run locally in your browser; no visitor analytics or server connection is added by this file.</p>
+          <p>This page is an interactive secret archive. Local browser storage keeps track of your solved ciphers and decrypted logs without external cookies.</p>
           <div class="divider"></div>
-          <h3>Quick controls</h3><p>Open the terminal with <code>~</code> or the button at the top. Change the atmosphere from the theme picker. Use the sparkle button to reduce motion and particle effects.</p>
+          <h3>Quick controls</h3><p>Open terminal with <code>~</code> key. Use <code>puzzle</code> to get a clue. Change atmosphere anytime with the theme selector.</p>
           <div class="card-actions"><button class="pill-btn" data-open-terminal>Open terminal</button><button class="pill-btn" id="openThemes2">Choose theme</button></div>
         </article>
       </div>
     </section>
   </main>
 
-  <footer class="footer"><span>© <span id="year"></span> <strong>RAVEN</strong> — PERSONAL ARCHIVE</span><span>MADE OF NIGHT, CODE & MEMORY</span><a href="#home">Back to top ↑</a></footer>
+  <footer class="footer"><span>© <span id="year"></span> <strong>RAVEN</strong> — SECRET ARCHIVE</span><span>MADE OF NIGHT, CODE & MEMORY</span><a href="#home">Back to top ↑</a></footer>
 </div>
 
 <div class="overlay" id="terminalOverlay" role="dialog" aria-modal="true" aria-labelledby="terminalTitle">
   <div class="modal">
-    <div class="modal-head"><h2 id="terminalTitle">Raven.exe / terminal</h2><button class="close-btn" data-close="terminalOverlay" aria-label="Close terminal">×</button></div>
+    <div class="modal-head"><h2 id="terminalTitle">Raven.exe / Secret Terminal</h2><button class="close-btn" data-close="terminalOverlay" aria-label="Close terminal">×</button></div>
     <div class="terminal-body">
-      <div class="terminal-welcome">RAVEN SYSTEM [local mode]<br>Type <span style="color:var(--accent)">help</span> to see available commands.</div>
+      <div class="terminal-welcome">RAVEN ARCHIVE TERMINAL [CLASSIFIED MODE]<br>Type <span style="color:var(--accent)">help</span> for system commands or <span style="color:var(--accent)">puzzle</span> for current decipher challenge.</div>
       <div id="terminalOutput" aria-live="polite"></div>
       <form class="terminal-form" id="terminalForm"><label for="terminalInput">guest@raven:~$</label><input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Terminal command"><button class="close-btn" type="submit" aria-label="Run command">↵</button></form>
-      <div class="terminal-hint">Tip: press ↑ to recall your last command. This terminal is a local visual easter egg.</div>
+      <div class="terminal-hint">Tip: Use ↑/↓ to browse command history. Solve riddles to unlock secret logs.</div>
     </div>
   </div>
 </div>
@@ -316,11 +395,11 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  // Rotating bio, inserted as text (not HTML).
+  // Bio rotation animation
   const bioLines = [
     "Love fades, memories don't.",
     "True friends build on trust, not promises.",
-    "Somewhere between dreams and static."
+    "Somewhere between dreams and secrets."
   ];
   const bioEl = $("#bioText");
   let bioIndex = 0, charIndex = 0, deleting = false, bioTimer;
@@ -335,7 +414,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   }
   typeBio();
 
-  // Live local clock and elapsed page session.
+  // Clock & session tracking
   const startedAt = Date.now();
   const timeEl = $("#localTime"), sessionEl = $("#sessionTime");
   function updateTime() {
@@ -349,7 +428,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   updateTime(); window.setInterval(updateTime, 1000);
   $("#year").textContent = new Date().getFullYear();
 
-  // Theme selection, persisted locally in this browser.
+  // Theme Manager
   const themeNames = {gothic:"DARK GOTHIC",void:"COLD VOID",blood:"BLOOD MOON"};
   function applyTheme(theme) {
     if (!Object.hasOwn(themeNames, theme)) theme = "gothic";
@@ -362,6 +441,8 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   let savedTheme = "gothic";
   try { savedTheme = localStorage.getItem("raven-theme") || "gothic"; } catch (_) {}
   applyTheme(savedTheme);
+
+  // Overlay Controls
   function openOverlay(id) {
     const overlay = document.getElementById(id);
     if (!overlay) return;
@@ -394,39 +475,104 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
     }
   });
 
-  // Local terminal. Commands do not execute arbitrary JavaScript.
+  // Secret Archive & Cipher Puzzles System
+  let unlocked = { log1: false, log2: false, log3: false };
+  try {
+    const savedUnlocked = localStorage.getItem("raven-unlocked");
+    if (savedUnlocked) unlocked = JSON.parse(savedUnlocked);
+  } catch (_) {}
+
+  function saveProgress() {
+    try { localStorage.setItem("raven-unlocked", JSON.stringify(unlocked)); } catch (_) {}
+    updateArchiveUI();
+  }
+
+  function updateArchiveUI() {
+    const count = Object.values(unlocked).filter(Boolean).length;
+    $("#unlockedCount").textContent = `${count} / 3 UNLOCKED`;
+    if (unlocked.log1) {
+      $("#classifiedPreview").textContent = "Log #001: 'Shadows are not the absence of light, but its silent reflection.'";
+    }
+  }
+  updateArchiveUI();
+
+  const riddles = [
+    { id: "log1", puzzle: "Riddle #1: What disappears the moment you say its name?", answer: "silence", key: "unlock silence" },
+    { id: "log2", puzzle: "Riddle #2: I have cities, but no houses. I have mountains, but no trees. What am I?", answer: "map", key: "unlock map" },
+    { id: "log3", puzzle: "Riddle #3: What feeds on code, breathes in dark mode, and never sleeps?", answer: "raven", key: "unlock raven" }
+  ];
+
+  // Interactive Terminal System
   const terminalForm = $("#terminalForm"), terminalInput = $("#terminalInput"), terminalOutput = $("#terminalOutput");
   const commandHistory = []; let historyIndex = 0;
+
   function terminalPrint(text, className = "") {
     const line = document.createElement("div");
     line.className = "terminal-line" + (className ? ` ${className}` : "");
     line.textContent = text; terminalOutput.appendChild(line);
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
+
   const commands = {
-    help: () => "Commands: help, about, socials, projects, theme, music, clear, time, whoami",
-    about: () => "Raven — a personal corner for code, games, music and memories.",
-    whoami: () => "guest@raven — visitor session (local only)",
-    socials: () => "Facebook: facebook.com/28OOO | TikTok: @28x1o | YouTube: @0ox0 | Discord: 900581050256850984",
-    projects: () => "Projects: Raven terminal / visual experiments / game dev notes. Status: in progress.",
-    time: () => `Local time: ${new Date().toLocaleString()}`,
+    help: () => "Available Commands:\n  help      - Show command list\n  about     - About Raven Archive\n  puzzle    - Get current decryption riddle\n  unlock    - Usage: unlock <answer>\n  logs      - Display decrypted secret logs\n  socials   - Display social links\n  music     - Toggle background audio\n  theme     - Change current atmosphere\n  clear     - Clear terminal buffer",
+    about: () => "Raven Archive v2.5 — Encrypted local node. Built for silent thinkers and night wanderers.",
+    whoami: () => "guest@raven — Secret Archive clearance level 1",
+    socials: () => "Facebook: facebook.com/28OOO\nTikTok: @28x1o\nYouTube: @0ox0\nDiscord ID: 900581050256850984",
+    puzzle: () => {
+      const next = riddles.find(r => !unlocked[r.id]);
+      if (!next) return "All ciphers decrypted! Type 'logs' to read all classified entries.";
+      return `${next.puzzle}\n-> Decrypt with: unlock <your_answer>`;
+    },
+    logs: () => {
+      let msg = "=== CLASSIFIED LOGS ===\n";
+      msg += unlocked.log1 ? "[LOG 001]: Shadows are not the absence of light, but its silent reflection.\n" : "[LOG 001]: [LOCKED - Solve Riddle #1]\n";
+      msg += unlocked.log2 ? "[LOG 002]: The map is not the territory, but a key to lost places.\n" : "[LOG 002]: [LOCKED - Solve Riddle #2]\n";
+      msg += unlocked.log3 ? "[LOG 003]: Raven lives where static meets the stardust.\n" : "[LOG 003]: [LOCKED - Solve Riddle #3]\n";
+      return msg;
+    },
+    time: () => `Local system time: ${new Date().toLocaleString()}`,
     theme: () => { openOverlay("themeOverlay"); return "Opening theme selector…"; },
-    music: () => { toggleMusic(); return `Music ${music.paused ? "paused" : "play requested"}.`; },
+    music: () => { toggleMusic(); return `Audio status: ${music.paused ? "Paused" : "Playing"}.`; },
     clear: () => { terminalOutput.replaceChildren(); return ""; }
   };
+
   terminalForm.addEventListener("submit", event => {
     event.preventDefault();
     const raw = terminalInput.value.trim();
     if (!raw) return;
-    terminalPrint(`guest@raven:~$ ${raw}`, "command");
+    terminalPrint(`guest@raven:~$ ${raw}`, "prompt");
     commandHistory.push(raw); historyIndex = commandHistory.length;
-    const key = raw.toLowerCase();
-    if (commands[key]) {
-      const result = commands[key]();
-      if (result) terminalPrint(result);
-    } else terminalPrint(`Command not found: ${raw}. Type "help" for available commands.`);
+
+    const parts = raw.split(" ");
+    const cmd = parts[0].toLowerCase();
+    const arg = parts.slice(1).join(" ").toLowerCase();
+
+    if (cmd === "unlock") {
+      if (!arg) {
+        terminalPrint("Usage: unlock <answer>", "error");
+      } else {
+        const currentRiddle = riddles.find(r => !unlocked[r.id]);
+        if (!currentRiddle) {
+          terminalPrint("All logs already unlocked! Type 'logs' to view them.", "success");
+        } else if (arg === currentRiddle.answer) {
+          unlocked[currentRiddle.id] = true;
+          saveProgress();
+          terminalPrint(`[ACCESS GRANTED] Decrypted entry ${currentRiddle.id.toUpperCase()}!`, "secret");
+          terminalPrint("Type 'logs' to view decrypted archives or 'puzzle' for the next cipher.", "success");
+          toast("Secret Log Decrypted!");
+        } else {
+          terminalPrint(`[ACCESS DENIED] Incorrect cipher key '${arg}'. Try again.`, "error");
+        }
+      }
+    } else if (commands[cmd]) {
+      const res = commands[cmd]();
+      if (res) terminalPrint(res);
+    } else {
+      terminalPrint(`Command not recognized: '${cmd}'. Type 'help' for command list.`, "error");
+    }
     terminalInput.value = "";
   });
+
   terminalInput.addEventListener("keydown", event => {
     if (event.key === "ArrowUp") {
       event.preventDefault(); historyIndex = Math.max(0, historyIndex - 1);
@@ -436,33 +582,31 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
       terminalInput.value = commandHistory[historyIndex] || "";
     }
   });
-  terminalPrint("Connection established. Welcome to the void.", "prompt");
 
-  // Music controls and audio-reactive bars when the browser allows Web Audio access.
+  terminalPrint("Connected to Raven Secret Archive.", "secret");
+  terminalPrint("Type 'puzzle' to decrypt classified logs.", "prompt");
+
+  // Web Audio API & Visualizer System
   const music = $("#music"), musicToggle = $("#musicToggle"), musicState = $("#musicState"), visualizer = $("#visualizer");
-  for (let i=0;i<22;i++) visualizer.appendChild(document.createElement("span"));
+  for (let i=0; i<24; i++) visualizer.appendChild(document.createElement("span"));
+
   let audioContext = null, analyser = null, sourceNode = null, audioData = null;
   let audioFrame = 0;
+
   function setupAnalyser() {
     if (analyser || !window.AudioContext && !window.webkitAudioContext) return;
     try {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       audioContext = new AudioContextClass();
-      analyser = audioContext.createAnalyser(); analyser.fftSize = 64;
+      analyser = audioContext.createAnalyser(); 
+      analyser.fftSize = 128;
       sourceNode = audioContext.createMediaElementSource(music);
-      sourceNode.connect(analyser); analyser.connect(audioContext.destination);
+      sourceNode.connect(analyser); 
+      analyser.connect(audioContext.destination);
       audioData = new Uint8Array(analyser.frequencyBinCount);
     } catch (_) { analyser = null; }
   }
-  function drawAudio() {
-    if (!analyser || music.paused) return;
-    analyser.getByteFrequencyData(audioData);
-    [...visualizer.children].forEach((bar, i) => {
-      const value = audioData[i % audioData.length] || 0;
-      bar.style.height = `${Math.max(3, 3 + value / 255 * 18)}px`;
-    });
-    audioFrame = requestAnimationFrame(drawAudio);
-  }
+
   async function toggleMusic() {
     if (music.paused) {
       try {
@@ -470,12 +614,12 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
         if (audioContext && audioContext.state === "suspended") await audioContext.resume();
         await music.play();
         musicToggle.textContent = "Ⅱ"; musicToggle.setAttribute("aria-label","Pause music");
-        musicState.textContent = "Now playing • Raven's soundtrack";
+        musicState.textContent = "Now playing • Secret Soundtrack";
         visualizer.classList.add("playing");
         if (analyser) { cancelAnimationFrame(audioFrame); drawAudio(); }
-        else $("#signalState").textContent = "AUDIO / PLAYING";
+        else $("#signalState").textContent = "AUDIO / ACTIVE";
       } catch (_) {
-        musicState.textContent = "Playback unavailable — check the audio link";
+        musicState.textContent = "Playback unavailable — check audio source";
         toast("The browser could not play this audio.");
       }
     } else {
@@ -490,7 +634,16 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   music.addEventListener("ended", () => { musicToggle.textContent = "▶"; musicState.textContent = "Track ended"; visualizer.classList.remove("playing"); });
   music.addEventListener("error", () => { musicState.textContent = "Audio source unavailable"; });
 
-  // Copy current page URL, with a safe fallback.
+  function drawAudio() {
+    if (!analyser || music.paused) return;
+    analyser.getByteFrequencyData(audioData);
+    [...visualizer.children].forEach((bar, i) => {
+      const value = audioData[i % audioData.length] || 0;
+      bar.style.height = `${Math.max(3, 3 + (value / 255) * 18)}px`;
+    });
+  }
+
+  // Toast System
   function toast(message) {
     const el = $("#toast"); el.textContent = message; el.classList.add("show");
     window.clearTimeout(toast.timer); toast.timer = window.setTimeout(() => el.classList.remove("show"), 2200);
@@ -509,61 +662,121 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
     } catch (_) { toast("Copy unavailable — copy the address bar URL."); }
   });
 
-  // Lightweight canvas particles; pause when reduced motion is requested or tab is hidden.
+  // Particle Canvas & Interactive Cursor
   const canvas = $("#particleCanvas"), ctx = canvas.getContext("2d");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let particles = [], pointer = {x:-1000,y:-1000}, motionOff = reducedMotion.matches, raf = 0, dpr = 1;
+  let particles = [], pointer = {x:-1000, y:-1000, targetX:-1000, targetY:-1000}, motionOff = reducedMotion.matches, raf = 0, dpr = 1;
+
   function resizeCanvas() {
     dpr = Math.min(window.devicePixelRatio || 1, 1.7);
     canvas.width = Math.floor(innerWidth * dpr); canvas.height = Math.floor(innerHeight * dpr);
     canvas.style.width = `${innerWidth}px`; canvas.style.height = `${innerHeight}px`;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count = Math.min(64, Math.floor(innerWidth * innerHeight / 19000));
+    const count = Math.min(85, Math.floor(innerWidth * innerHeight / 14000));
     particles = Array.from({length:count}, () => ({
-      x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-      vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
-      r:Math.random()*1.5+.35,a:Math.random()*.42+.12
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      vx: (Math.random()-.5)*.35,
+      vy: (Math.random()-.5)*.35,
+      r: Math.random()*1.8 + .4,
+      baseR: Math.random()*1.8 + .4,
+      a: Math.random()*.5 + .15
     }));
   }
+
   function particleLoop() {
     raf = 0;
     if (motionOff || document.hidden) return;
     ctx.clearRect(0,0,innerWidth,innerHeight);
+
+    // Mouse position lerp
+    pointer.x += (pointer.targetX - pointer.x) * 0.1;
+    pointer.y += (pointer.targetY - pointer.y) * 0.1;
+
+    document.documentElement.style.setProperty('--mouse-x', `${pointer.x}px`);
+    document.documentElement.style.setProperty('--mouse-y', `${pointer.y}px`);
+
     const style = getComputedStyle(document.body);
     const rgb = style.getPropertyValue("--accent-rgb").trim() || "199,164,216";
-    particles.forEach((p,i) => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < -5) p.x = innerWidth+5; if (p.x > innerWidth+5) p.x = -5;
-      if (p.y < -5) p.y = innerHeight+5; if (p.y > innerHeight+5) p.y = -5;
-      const dx=pointer.x-p.x,dy=pointer.y-p.y,dist=Math.hypot(dx,dy);
-      if (dist<110 && dist>0) { p.x -= dx/dist*.12; p.y -= dy/dist*.12; }
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${rgb},${p.a})`;ctx.fill();
-      for (let j=i+1;j<particles.length;j++) {
-        const q=particles[j],dd=Math.hypot(p.x-q.x,p.y-q.y);
-        if (dd<95) {ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(${rgb},${.075*(1-dd/95)})`;ctx.lineWidth=.6;ctx.stroke();}
+
+    // Audio reactive energy
+    let audioEnergy = 0;
+    if (analyser && !music.paused && audioData) {
+      analyser.getByteFrequencyData(audioData);
+      let sum = 0;
+      for(let i=0; i<audioData.length; i++) sum += audioData[i];
+      audioEnergy = sum / audioData.length / 255;
+      if (audioData.length > 0) {
+        [...visualizer.children].forEach((bar, i) => {
+          const value = audioData[i % audioData.length] || 0;
+          bar.style.height = `${Math.max(3, 3 + (value / 255) * 18)}px`;
+        });
+      }
+    }
+
+    particles.forEach((p, i) => {
+      const speedMultiplier = 1 + audioEnergy * 2.5;
+      p.x += p.vx * speedMultiplier; 
+      p.y += p.vy * speedMultiplier;
+
+      if (p.x < -10) p.x = innerWidth+10; if (p.x > innerWidth+10) p.x = -10;
+      if (p.y < -10) p.y = innerHeight+10; if (p.y > innerHeight+10) p.y = -10;
+
+      const dx = pointer.x - p.x, dy = pointer.y - p.y, dist = Math.hypot(dx, dy);
+      if (dist < 140 && dist > 0) {
+        const force = (1 - dist / 140) * 1.5;
+        p.x -= (dx / dist) * force * 2;
+        p.y -= (dy / dist) * force * 2;
+      }
+
+      const currentR = p.baseR + audioEnergy * 2.2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, currentR, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb}, ${Math.min(1, p.a + audioEnergy * 0.4)})`;
+      ctx.fill();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j], dd = Math.hypot(p.x - q.x, p.y - q.y);
+        const maxDist = 105 + audioEnergy * 40;
+        if (dd < maxDist) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(${rgb}, ${(.1 + audioEnergy * 0.15) * (1 - dd / maxDist)})`;
+          ctx.lineWidth = .7 + audioEnergy * 0.5;
+          ctx.stroke();
+        }
       }
     });
+
     raf = requestAnimationFrame(particleLoop);
   }
+
   function startParticles() { if (!motionOff && !document.hidden && !raf) raf = requestAnimationFrame(particleLoop); }
   function stopParticles() { if (raf) cancelAnimationFrame(raf); raf=0; if(ctx) ctx.clearRect(0,0,innerWidth,innerHeight); }
+
   function setMotionOff(value) {
     motionOff = value; document.body.classList.toggle("reduce-motion", value);
     $("#motionToggle").setAttribute("aria-pressed", String(value));
     $("#motionToggle").textContent = value ? "✦" : "✧";
     if (value) stopParticles(); else startParticles();
-    toast(value ? "Reduced motion enabled." : "Atmospheric effects enabled.");
+    toast(value ? "Reduced motion enabled." : "Secret Archive visuals active.");
   }
+
   $("#motionToggle").addEventListener("click", () => setMotionOff(!motionOff));
   window.addEventListener("resize", () => { resizeCanvas(); startParticles(); });
-  window.addEventListener("pointermove", event => { pointer.x=event.clientX;pointer.y=event.clientY; }, {passive:true});
+  window.addEventListener("pointermove", event => {
+    pointer.targetX = event.clientX;
+    pointer.targetY = event.clientY;
+  }, {passive:true});
+
   document.addEventListener("visibilitychange", () => document.hidden ? stopParticles() : startParticles());
   resizeCanvas(); startParticles();
 
-  // A small, honest status indicator; no network presence or analytics is claimed.
-  $("#signalState").textContent = navigator.onLine ? "BROWSER / READY" : "OFFLINE";
-  window.addEventListener("online", () => $("#signalState").textContent = "BROWSER / READY");
-  window.addEventListener("offline", () => $("#signalState").textContent = "OFFLINE");
+  // Status initialization
+  $("#signalState").textContent = navigator.onLine ? "ARCHIVE ENCRYPTED" : "OFFLINE ARCHIVE";
+  window.addEventListener("online", () => $("#signalState").textContent = "ARCHIVE ENCRYPTED");
+  window.addEventListener("offline", () => $("#signalState").textContent = "OFFLINE ARCHIVE");
 })();
 </script>
 </body>

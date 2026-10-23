@@ -183,7 +183,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
  .theme-options{grid-template-columns:1fr}.theme-option{display:grid;grid-template-columns:52px 1fr;column-gap:11px;align-items:center}.theme-swatch{grid-row:span 2;height:38px;margin:0}
  .footer{margin-top:38px}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#particleCanvas{display:none}.cinema-aurora{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -603,7 +603,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   // Cinematic particle field: star depth, connective filaments, cursor wake and a soft pulse.
   const canvas = $("#particleCanvas"), ctx = canvas.getContext("2d");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let particles = [], pointer = {x:-1000,y:-1000,px:-1000,py:-1000}, motionOff = reducedMotion.matches, raf = 0, dpr = 1;
+  let particles = [], pointer = {x:-1000,y:-1000,px:-1000,py:-1000}, motionOff = false, raf = 0, dpr = 1;
   const cursorHalo = $("#cursorHalo");
   function resizeCanvas() {
     dpr = Math.min(window.devicePixelRatio || 1, 1.5);

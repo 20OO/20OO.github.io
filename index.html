@@ -156,57 +156,11 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
  .footer{margin-top:38px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#particleCanvas{display:none}}
-
-/* Cinematic layers + Secret Archive */
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;background:radial-gradient(ellipse at center,transparent 42%,rgba(0,0,0,.44) 100%);box-shadow:inset 0 0 12vw rgba(0,0,0,.42)}
-.cinematic-grid{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.12;background:linear-gradient(transparent 96%,rgba(var(--accent-rgb),.18) 100%);background-size:100% 4px;mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent)}
-.ambient-orb{position:fixed;pointer-events:none;z-index:-1;width:38vw;height:38vw;max-width:520px;max-height:520px;min-width:220px;min-height:220px;border-radius:50%;filter:blur(72px);opacity:.09;background:var(--accent);top:10%;left:-14%;animation:orbDrift 22s ease-in-out infinite alternate}
-@keyframes orbDrift{from{transform:translate3d(0,0,0) scale(.88)}to{transform:translate3d(28vw,18vh,0) scale(1.18)}}
-.topbar,.hero,.section,.footer{animation:riseIn .8s both;animation-timing-function:cubic-bezier(.2,.75,.25,1)}
-.hero{animation-delay:.08s}.section:nth-of-type(2){animation-delay:.14s}.section:nth-of-type(3){animation-delay:.2s}.footer{animation-delay:.25s}
-@keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.archive-shell{position:relative;overflow:hidden;border-radius:20px;padding:clamp(20px,4vw,34px);isolation:isolate}
-.archive-shell::before{content:"";position:absolute;inset:-1px;z-index:-1;background:radial-gradient(circle at 80% 10%,rgba(var(--accent-rgb),.14),transparent 32%),linear-gradient(135deg,rgba(255,255,255,.025),transparent 55%)}
-.archive-topline{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font:10px var(--mono);letter-spacing:.15em;color:var(--muted);text-transform:uppercase}
-.archive-seal{display:grid;place-items:center;width:68px;height:68px;border:1px solid rgba(var(--accent-rgb),.4);border-radius:50%;font-size:28px;color:var(--accent);box-shadow:0 0 30px rgba(var(--accent-rgb),.12),inset 0 0 20px rgba(var(--accent-rgb),.06);animation:sealPulse 5s ease-in-out infinite}
-@keyframes sealPulse{50%{box-shadow:0 0 48px rgba(var(--accent-rgb),.24),inset 0 0 28px rgba(var(--accent-rgb),.1);transform:rotate(8deg)}}
-.archive-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.72fr);gap:24px;align-items:center;margin-top:24px}
-.archive-copy h3{font-size:clamp(24px,4vw,38px);letter-spacing:-.045em;line-height:1.08;margin:0 0 13px;max-width:560px}
-.archive-copy p{font-size:13px;line-height:1.85;color:var(--muted);max-width:600px;margin:0}
-.archive-status{display:flex;align-items:center;gap:8px;color:var(--accent);font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;margin-bottom:14px}
-.archive-status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-.puzzle-box{border:1px solid var(--line);border-radius:15px;padding:18px;background:rgba(0,0,0,.2);position:relative}
-.puzzle-index{font:10px var(--mono);letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
-.puzzle-box h4{font-size:14px;margin:12px 0 8px}
-.puzzle-box p{font-size:12px;color:var(--muted);line-height:1.75;margin:0 0 15px}
-.puzzle-form{display:flex;gap:8px}
-.puzzle-form input{min-width:0;flex:1;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:9px;padding:11px 12px;color:var(--text);font:12px var(--mono)}
-.puzzle-form button{border:1px solid rgba(var(--accent-rgb),.5);border-radius:9px;background:rgba(var(--accent-rgb),.12);padding:0 13px;cursor:pointer;font-size:12px}
-.puzzle-feedback{min-height:20px;margin-top:10px;color:var(--muted);font:10px/1.7 var(--mono)}
-.archive-fragments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
-.fragment{position:relative;min-height:128px;border:1px solid var(--line);border-radius:13px;padding:15px;background:rgba(0,0,0,.16);opacity:.52;transition:opacity .4s,border-color .4s,transform .4s;overflow:hidden}
-.fragment.unlocked{opacity:1;border-color:rgba(var(--accent-rgb),.5);transform:translateY(-2px);background:linear-gradient(145deg,rgba(var(--accent-rgb),.09),rgba(0,0,0,.14))}
-.fragment .fragment-no{font:10px var(--mono);color:var(--accent);letter-spacing:.12em}
-.fragment h4{font-size:12px;margin:12px 0 7px}
-.fragment p{font-size:11px;line-height:1.7;color:var(--muted);margin:0}
-.fragment .fragment-lock{font:10px var(--mono);color:#8d7d94}
-.archive-final{display:none;margin-top:14px;padding:20px;border:1px solid rgba(var(--accent-rgb),.45);border-radius:14px;background:rgba(var(--accent-rgb),.06);text-align:center}
-.archive-final.show{display:block;animation:revealFinal .9s both}
-.archive-final .final-mark{font-size:24px;color:var(--accent)}
-.archive-final blockquote{margin:12px auto 0;max-width:620px;font-size:clamp(16px,2.5vw,23px);line-height:1.55;letter-spacing:-.02em}
-@keyframes revealFinal{from{opacity:0;filter:blur(10px);transform:translateY(12px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
-.archive-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font:10px var(--mono)}
-.archive-foot button{background:transparent;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
-.terminal-welcome .warning{color:#d9a9b6}
-@media(max-width:760px){.archive-layout{grid-template-columns:1fr}.archive-seal{width:56px;height:56px}.archive-fragments{grid-template-columns:1fr}.fragment{min-height:0}.fragment h4{margin-top:8px}}
-@media(prefers-reduced-motion:reduce){.ambient-orb,.archive-seal,.topbar,.hero,.section,.footer{animation:none!important}}
-
 </style>
 </head>
 <body>
 <canvas id="particleCanvas" aria-hidden="true"></canvas>
 <div class="noise" aria-hidden="true"></div>
-<div class="cinematic-grid" aria-hidden="true"></div><div class="ambient-orb" aria-hidden="true"></div>
 <div class="site-shell">
   <header class="topbar">
     <a class="brand" href="#home" aria-label="Raven home"><span class="brand-mark">R</span><span>RAVEN / PERSONAL ARCHIVE</span></a>
@@ -266,50 +220,16 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
             </div>
             <button class="play-btn" id="musicToggle" aria-label="Play music" title="Play or pause music">▶</button>
           </div>
-          <audio id="music" loop preload="none">
+          <audio id="music" loop preload="none" crossorigin="anonymous">
             <source src="https://files.catbox.moe/49slbb.mp3" type="audio/mpeg">
           </audio>
         </div>
       </aside>
     </section>
 
-
-    <section class="section" id="archive">
-      <div class="section-heading">
-        <div><div class="eyebrow">03 / Restricted access</div><h2>The Secret Archive</h2></div>
-        <p class="section-description">Three fragments. One forgotten message. Nothing here leaves this browser.</p>
-      </div>
-      <div class="archive-shell glass">
-        <div class="archive-topline"><span>RAVEN ARCHIVE // FILE 00X</span><span id="archiveProgress">0 / 3 FRAGMENTS RECOVERED</span></div>
-        <div class="archive-layout">
-          <div class="archive-copy">
-            <div class="archive-status" id="archiveStatus">SEALED / AWAITING KEY</div>
-            <h3>Some memories hide in plain sight.</h3>
-            <p>A fragment of the old system is still alive. The terminal knows the first clue, but the archive will only open when you name the thing that follows you without ever taking a step. Solve the riddle here, or use the terminal. This is a local puzzle, not a real security boundary.</p>
-            <div class="card-actions"><button class="pill-btn" data-open-terminal>Enter the terminal ↗</button><button class="pill-btn" id="resetArchive">Reset archive</button></div>
-          </div>
-          <div class="archive-seal" aria-hidden="true">𓂀</div>
-        </div>
-        <div class="puzzle-box" id="puzzleBox">
-          <div class="puzzle-index">PUZZLE 01 / THE SHADOW</div>
-          <h4>“I follow you without feet.”</h4>
-          <p>I borrow your shape, vanish when the light is gone, and never speak — yet I am always close. What am I?</p>
-          <form class="puzzle-form" id="puzzleForm"><input id="puzzleAnswer" aria-label="Riddle answer" autocomplete="off" placeholder="Enter the key…" maxlength="40"><button type="submit">Unlock</button></form>
-          <div class="puzzle-feedback" id="puzzleFeedback" role="status" aria-live="polite">A hint is available in the terminal: type <strong>hint</strong>.</div>
-        </div>
-        <div class="archive-fragments" aria-label="Recovered archive fragments">
-          <article class="fragment" id="fragment1"><div class="fragment-no">FRAGMENT 01 / 03</div><h4>THE FIRST TRACE</h4><p class="fragment-content">[ LOCKED ]</p><span class="fragment-lock">Awaiting the key.</span></article>
-          <article class="fragment" id="fragment2"><div class="fragment-no">FRAGMENT 02 / 03</div><h4>THE QUIET ROOM</h4><p class="fragment-content">[ LOCKED ]</p><span class="fragment-lock">Awaiting the key.</span></article>
-          <article class="fragment" id="fragment3"><div class="fragment-no">FRAGMENT 03 / 03</div><h4>THE LAST SIGNAL</h4><p class="fragment-content">[ LOCKED ]</p><span class="fragment-lock">Awaiting the key.</span></article>
-        </div>
-        <div class="archive-final" id="archiveFinal"><div class="final-mark">✦</div><div class="eyebrow" style="margin-top:8px">ARCHIVE MESSAGE / DECLASSIFIED</div><blockquote>“The night keeps no promises. It only gives your quietest thoughts a place to exist.”</blockquote></div>
-        <div class="archive-foot"><span id="archiveFootnote">LOCAL STORAGE / PROGRESS STAYS ON THIS DEVICE</span><button id="openArchiveTerminal">Open terminal commands</button></div>
-      </div>
-    </section>
-
     <section class="section" id="projects">
       <div class="section-heading">
-        <div><div class="eyebrow">04 / Things in progress</div><h2>Projects from the shadows</h2></div>
+        <div><div class="eyebrow">03 / Things in progress</div><h2>Projects from the shadows</h2></div>
         <p class="section-description">A small archive of ideas, experiments and things worth building. More will appear when they're ready.</p>
       </div>
       <div class="project-grid">
@@ -333,7 +253,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
 
     <section class="section" id="soundtrack">
       <div class="section-heading">
-        <div><div class="eyebrow">05 / Background noise</div><h2>Something on the screen</h2></div>
+        <div><div class="eyebrow">04 / Background noise</div><h2>Something on the screen</h2></div>
         <p class="section-description">A video embedded from the original profile. Playback is controlled by YouTube.</p>
       </div>
       <div class="feature-grid">
@@ -359,10 +279,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
   <div class="modal">
     <div class="modal-head"><h2 id="terminalTitle">Raven.exe / terminal</h2><button class="close-btn" data-close="terminalOverlay" aria-label="Close terminal">×</button></div>
     <div class="terminal-body">
-      <div class="terminal-welcome">RAVEN SYSTEM [local mode]<br>Type <span style="color:var(--accent)">help</span> to see available commands.<br><span class="warning">NOTICE: local simulation only — no remote system is contacted.</span></div>
+      <div class="terminal-welcome">RAVEN SYSTEM [local mode]<br>Type <span style="color:var(--accent)">help</span> to see available commands.</div>
       <div id="terminalOutput" aria-live="polite"></div>
       <form class="terminal-form" id="terminalForm"><label for="terminalInput">guest@raven:~$</label><input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Terminal command"><button class="close-btn" type="submit" aria-label="Run command">↵</button></form>
-      <div class="terminal-hint">Tip: ↑/↓ recalls commands. Try <strong>hint</strong>, <strong>riddle</strong>, <strong>unlock shadow</strong>, or <strong>fragment 01</strong>.</div>
+      <div class="terminal-hint">Tip: press ↑ to recall your last command. This terminal is a local visual easter egg.</div>
     </div>
   </div>
 </div>
@@ -483,62 +403,16 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
     line.textContent = text; terminalOutput.appendChild(line);
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
-  const archiveFragments = [
-    "Some doors open only after you stop trying to force them.",
-    "Silence is not emptiness; sometimes it is a room waiting for a name.",
-    "You found this because you were willing to look twice."
-  ];
-  let recoveredFragments = new Set();
-  try {
-    const saved = JSON.parse(localStorage.getItem("raven-archive-fragments") || "[]");
-    if (Array.isArray(saved)) recoveredFragments = new Set(saved.filter(n => Number.isInteger(n) && n >= 1 && n <= 3));
-  } catch (_) {}
-  let archiveUnlocked = false;
-  try { archiveUnlocked = localStorage.getItem("raven-archive-key") === "accepted"; } catch (_) {}
-  function updateArchiveUI() {
-    recoveredFragments.forEach(n => {
-      const card = $(`#fragment${n}`);
-      if (!card) return;
-      card.classList.add("unlocked");
-      $(".fragment-content", card).textContent = archiveFragments[n - 1];
-      $(".fragment-lock", card).textContent = "Recovered / local record saved";
-    });
-    $("#archiveProgress").textContent = `${recoveredFragments.size} / 3 FRAGMENTS RECOVERED`;
-    $("#archiveStatus").textContent = recoveredFragments.size === 3 ? "ARCHIVE / MESSAGE DECLASSIFIED" : archiveUnlocked ? "KEY ACCEPTED / ARCHIVE OPEN" : "SEALED / AWAITING KEY";
-    $("#archiveFinal").classList.toggle("show", recoveredFragments.size === 3);
-    try { localStorage.setItem("raven-archive-fragments", JSON.stringify([...recoveredFragments])); } catch (_) {}
-  }
-  function unlockArchive(answer) {
-    if (String(answer).trim().toLowerCase().replace(/[.!?]+$/g, "") !== "shadow") return false;
-    archiveUnlocked = true;
-    try { localStorage.setItem("raven-archive-key", "accepted"); } catch (_) {}
-    $("#puzzleFeedback").textContent = "KEY ACCEPTED. The first seal is broken. Recover the three fragments from the terminal.";
-    $("#puzzleAnswer").value = "shadow";
-    $("#archiveStatus").textContent = "KEY ACCEPTED / ARCHIVE OPEN";
-    toast("Archive seal broken.");
-    return true;
-  }
-  function recoverFragment(n) {
-    if (!archiveUnlocked) return "ACCESS DENIED. Solve the riddle first: unlock shadow";
-    if (n < 1 || n > 3) return "Fragment index must be 01, 02, or 03.";
-    if (recoveredFragments.has(n)) return `Fragment ${String(n).padStart(2,"0")} already recovered.`;
-    recoveredFragments.add(n); updateArchiveUI();
-    return `Fragment ${String(n).padStart(2,"0")} recovered: ${archiveFragments[n - 1]}`;
-  }
   const commands = {
-    help: () => "Commands: help, about, whoami, socials, projects, theme, music, time, hint, riddle, unlock shadow, fragment 01|02|03, remember, clear",
-    about: () => "Raven — a personal corner for code, games, music and memories. The archive is a local story, not a real protected vault.",
-    whoami: () => "guest@raven — visitor session (local only; no account is created)",
+    help: () => "Commands: help, about, socials, projects, theme, music, clear, time, whoami",
+    about: () => "Raven — a personal corner for code, games, music and memories.",
+    whoami: () => "guest@raven — visitor session (local only)",
     socials: () => "Facebook: facebook.com/28OOO | TikTok: @28x1o | YouTube: @0ox0 | Discord: 900581050256850984",
-    projects: () => "Projects: Secret Archive / terminal / visual experiments / game dev notes. Status: in progress.",
+    projects: () => "Projects: Raven terminal / visual experiments / game dev notes. Status: in progress.",
     time: () => `Local time: ${new Date().toLocaleString()}`,
-    hint: () => "Look down, and it follows. Turn away from the light, and it disappears. It is not a ghost.",
-    riddle: () => "I follow you without feet, borrow your shape, and vanish in darkness. What am I?",
-    theme: () => { openOverlay("themeOverlay"); return "Opening atmosphere selector…"; },
+    theme: () => { openOverlay("themeOverlay"); return "Opening theme selector…"; },
     music: () => { toggleMusic(); return `Music ${music.paused ? "paused" : "play requested"}.`; },
-    clear: () => { terminalOutput.replaceChildren(); return "Terminal cleared."; },
-    remember: () => recoveredFragments.size === 3 ? "All fragments recovered. The message is visible in the Secret Archive." : `The archive is incomplete: ${recoveredFragments.size}/3 fragments. Try: fragment 01, fragment 02, fragment 03.`,
-    "unlock shadow": () => unlockArchive("shadow") ? "KEY ACCEPTED. Archive access granted. Try: fragment 01" : "ACCESS DENIED."
+    clear: () => { terminalOutput.replaceChildren(); return ""; }
   };
   terminalForm.addEventListener("submit", event => {
     event.preventDefault();
@@ -546,16 +420,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
     if (!raw) return;
     terminalPrint(`guest@raven:~$ ${raw}`, "command");
     commandHistory.push(raw); historyIndex = commandHistory.length;
-    const key = raw.toLowerCase().replace(/\s+/g, " ");
-    let result;
-    if (/^fragment\s+\d{1,2}$/.test(key)) {
-      result = recoverFragment(Number(key.split(/\s+/)[1]));
-    } else if (commands[key]) {
-      result = commands[key]();
-    } else {
-      result = `Command not found: ${raw}. Type "help" for available commands.`;
-    }
-    if (result) terminalPrint(result);
+    const key = raw.toLowerCase();
+    if (commands[key]) {
+      const result = commands[key]();
+      if (result) terminalPrint(result);
+    } else terminalPrint(`Command not found: ${raw}. Type "help" for available commands.`);
     terminalInput.value = "";
   });
   terminalInput.addEventListener("keydown", event => {
@@ -568,33 +437,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;back
     }
   });
   terminalPrint("Connection established. Welcome to the void.", "prompt");
-
-  // Secret Archive puzzle, saved only in this browser.
-  $("#puzzleForm").addEventListener("submit", event => {
-    event.preventDefault();
-    const answer = $("#puzzleAnswer").value;
-    if (unlockArchive(answer)) {
-      $("#puzzleFeedback").textContent = "Correct. Open the terminal and recover fragments 01, 02, and 03.";
-    } else {
-      $("#puzzleFeedback").textContent = "The seal remains closed. Think about the shape that follows you in the light.";
-    }
-  });
-  $("#openArchiveTerminal").addEventListener("click", () => openOverlay("terminalOverlay"));
-  $("#resetArchive").addEventListener("click", () => {
-    recoveredFragments = new Set(); archiveUnlocked = false;
-    try { localStorage.removeItem("raven-archive-key"); localStorage.removeItem("raven-archive-fragments"); } catch (_) {}
-    $("#puzzleAnswer").value = "";
-    $("#puzzleFeedback").textContent = "Archive reset on this device. Hint: type hint in the terminal.";
-    $$(".fragment").forEach(card => {
-      card.classList.remove("unlocked");
-      $(".fragment-content", card).textContent = "[ LOCKED ]";
-      $(".fragment-lock", card).textContent = "Awaiting the key.";
-    });
-    updateArchiveUI();
-    toast("Archive reset on this device.");
-  });
-  if (archiveUnlocked) { $("#puzzleFeedback").textContent = "KEY ACCEPTED. Recover the three fragments from the terminal."; $("#puzzleAnswer").value = "shadow"; }
-  updateArchiveUI();
 
   // Music controls and audio-reactive bars when the browser allows Web Audio access.
   const music = $("#music"), musicToggle = $("#musicToggle"), musicState = $("#musicState"), visualizer = $("#visualizer");

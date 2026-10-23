@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#09070d">
-<meta name="description" content="Raven — a personal corner of the internet.">
-<title>Raven — Into the Void</title>
+<meta name="description" content="Raven — a cinematic gothic personal archive shaped by sound and motion.">
+<title>Raven — Into the Void / Cinematic Edition</title>
 <style>
 :root{
   color-scheme:dark;
@@ -33,8 +33,21 @@ button{color:inherit}
 a{color:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 ::selection{background:var(--accent);color:#100b14}
-#particleCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
-.noise{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+#particleCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.site-shell{position:relative;z-index:2}
+.cinema-aurora{position:fixed;inset:-18%;z-index:0;pointer-events:none;overflow:hidden;opacity:.72;filter:blur(26px);transform:translate3d(0,0,0)}
+.cinema-aurora::before,.cinema-aurora::after{content:"";position:absolute;width:58vw;height:48vw;min-width:420px;min-height:340px;border-radius:50%;mix-blend-mode:screen;will-change:transform,opacity;}
+.cinema-aurora::before{left:2%;top:12%;background:radial-gradient(ellipse,rgba(var(--accent-rgb),.16),rgba(91,48,120,.07) 38%,transparent 70%);animation:auroraDrift 22s ease-in-out infinite alternate}
+.cinema-aurora::after{right:0;bottom:0;background:radial-gradient(ellipse,rgba(67,86,125,.16),rgba(var(--accent-rgb),.06) 42%,transparent 70%);animation:auroraDrift 28s ease-in-out infinite alternate-reverse}
+.cursor-halo{position:fixed;left:0;top:0;width:330px;height:330px;z-index:1;pointer-events:none;border-radius:50%;opacity:0;transform:translate3d(-50%,-50%,0);background:radial-gradient(circle,rgba(var(--accent-rgb),.105) 0%,rgba(var(--accent-rgb),.045) 26%,transparent 68%);mix-blend-mode:screen;will-change:transform;transition:opacity .35s ease}
+body.pointer-active .cursor-halo{opacity:1}
+body.music-active .cinema-aurora{opacity:1}
+body.music-active .cinema-aurora::before{animation-duration:7s}
+body.music-active .cinema-aurora::after{animation-duration:9s}
+@keyframes auroraDrift{0%{transform:translate3d(-5%,2%,0) rotate(-8deg) scale(.9);opacity:.55}50%{opacity:1}100%{transform:translate3d(7%,-4%,0) rotate(12deg) scale(1.13);opacity:.72}}
+@media(max-width:600px){.cursor-halo{width:230px;height:230px}.cinema-aurora{filter:blur(19px);opacity:.55}}
+@media(prefers-reduced-motion:reduce){.cinema-aurora::before,.cinema-aurora::after{animation:none!important}.cursor-halo{display:none!important}}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
 .site-shell{width:min(1120px,calc(100% - 36px));margin:0 auto;padding:22px 0 52px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:32px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;letter-spacing:.18em;font:600 12px var(--mono);text-transform:uppercase}
@@ -92,7 +105,8 @@ h1{font-size:clamp(32px,5vw,48px);letter-spacing:-.055em;line-height:1;margin:0;
 .play-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(var(--accent-rgb),.12);cursor:pointer}
 .visualizer{height:22px;display:flex;align-items:center;gap:3px;margin-top:9px;opacity:.7}
 .visualizer span{display:block;width:3px;height:4px;border-radius:5px;background:var(--accent);transition:height .08s linear}
-.visualizer.playing span{animation:wave .75s ease-in-out infinite alternate}
+.visualizer.playing span{animation:wave .75s ease-in-out infinite alternate;box-shadow:0 0 8px rgba(var(--accent-rgb),.45)}
+body.music-active .album-art{box-shadow:0 0 22px rgba(var(--accent-rgb),.22)}
 .visualizer.playing span:nth-child(3n){animation-delay:-.5s}.visualizer.playing span:nth-child(2n){animation-delay:-.25s}
 @keyframes wave{from{height:3px}to{height:17px}}
 .section{margin-top:54px}
@@ -145,6 +159,20 @@ h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.04em;margin:0}
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 body.theme-void{--bg:#070a10;--panel:rgba(10,16,24,.78);--panel-strong:rgba(7,11,17,.97);--accent:#9bc9e7;--accent-rgb:155,201,231}
 body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,6,10,.97);--accent:#e2a1ad;--accent-rgb:226,161,173}
+
+.archive-modal{width:min(560px,100%)}
+.archive-body{padding:22px}
+.archive-riddle{font-size:clamp(17px,3vw,22px);line-height:1.65;letter-spacing:-.02em;margin:14px 0 24px;color:var(--text)}
+.archive-form label{display:block;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.archive-entry{display:flex;gap:9px}
+.archive-entry input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.25);padding:12px;color:var(--text);font:13px var(--mono)}
+.archive-feedback{font-size:12px;color:var(--muted);margin:13px 0 0;min-height:18px}
+.archive-secret{margin-top:20px;padding:18px;border:1px solid rgba(var(--accent-rgb),.42);border-radius:13px;background:rgba(var(--accent-rgb),.055);animation:archiveReveal .7s ease both}
+.archive-secret p{font-size:16px;line-height:1.7;margin:12px 0;color:var(--text)}
+.archive-secret span{font:10px var(--mono);color:var(--accent);letter-spacing:.08em}
+@keyframes archiveReveal{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@media(max-width:560px){.archive-body{padding:18px}.archive-entry{flex-direction:column}.archive-entry .pill-btn{width:100%}}
+
 @media(max-width:850px){.hero{grid-template-columns:1fr}.status-card{min-height:auto}.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.project-card:last-child{grid-column:span 2}}
 @media(max-width:560px){
  .site-shell{width:min(100% - 22px,480px);padding-top:12px}
@@ -155,10 +183,12 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
  .theme-options{grid-template-columns:1fr}.theme-option{display:grid;grid-template-columns:52px 1fr;column-gap:11px;align-items:center}.theme-swatch{grid-row:span 2;height:38px;margin:0}
  .footer{margin-top:38px}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#particleCanvas{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#particleCanvas{display:none}.cinema-aurora{display:none}}
 </style>
 </head>
 <body>
+<div class="cinema-aurora" aria-hidden="true"></div>
+<div class="cursor-halo" id="cursorHalo" aria-hidden="true"></div>
 <canvas id="particleCanvas" aria-hidden="true"></canvas>
 <div class="noise" aria-hidden="true"></div>
 <div class="site-shell">
@@ -220,7 +250,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
             </div>
             <button class="play-btn" id="musicToggle" aria-label="Play music" title="Play or pause music">▶</button>
           </div>
-          <audio id="music" loop preload="none" crossorigin="anonymous">
+          <audio id="music" loop preload="metadata">
             <source src="https://files.catbox.moe/49slbb.mp3" type="audio/mpeg">
           </audio>
         </div>
@@ -259,7 +289,7 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
       <div class="feature-grid">
         <article class="feature-card glass">
           <h3>Current visual</h3><p>Keep it playing in the background, or leave the page quiet. Your choice.</p>
-          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/GyZPByIYd-M?enablejsapi=1" title="Raven's featured video" loading="lazy" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/7o4o9NspwMk?enablejsapi=1" title="Raven's featured video" loading="lazy" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
         </article>
         <article class="feature-card glass">
           <h3>A note from Raven</h3>
@@ -294,6 +324,26 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
       <button class="theme-option" data-theme="gothic" aria-pressed="true"><span class="theme-swatch"></span><strong>Dark Gothic</strong><small>Violet ash · default</small></button>
       <button class="theme-option" data-theme="void" aria-pressed="false"><span class="theme-swatch"></span><strong>Cold Void</strong><small>Midnight blue</small></button>
       <button class="theme-option" data-theme="blood" aria-pressed="false"><span class="theme-swatch"></span><strong>Blood Moon</strong><small>Muted crimson</small></button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="archiveOverlay" role="dialog" aria-modal="true" aria-labelledby="archiveTitle">
+  <div class="modal archive-modal">
+    <div class="modal-head"><h2 id="archiveTitle">Sealed archive / 001</h2><button class="close-btn" data-close="archiveOverlay" aria-label="Close archive">×</button></div>
+    <div class="archive-body">
+      <div class="eyebrow">LOCAL PUZZLE · NO SERVER</div>
+      <p class="archive-riddle">“I follow you without feet. I appear in light, but disappear in darkness. What am I?”</p>
+      <form id="archiveForm" class="archive-form">
+        <label for="archiveAnswer">Enter the key</label>
+        <div class="archive-entry"><input id="archiveAnswer" name="answer" autocomplete="off" spellcheck="false" placeholder="your answer…" aria-label="Archive puzzle answer"><button class="pill-btn" type="submit">Unlock</button></div>
+      </form>
+      <p id="archiveFeedback" class="archive-feedback" aria-live="polite">The archive is sealed. One word is enough.</p>
+      <div id="archiveSecret" class="archive-secret" hidden>
+        <div class="eyebrow">FRAGMENT RECOVERED</div>
+        <p>“Not everything that disappears is lost. Some things wait quietly for the right light.”</p>
+        <span>— RAVEN / MEMORY FRAGMENT 001</span>
+      </div>
     </div>
   </div>
 </div>
@@ -404,11 +454,12 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
   const commands = {
-    help: () => "Commands: help, about, socials, projects, theme, music, clear, time, whoami",
+    help: () => "Commands: help, about, socials, projects, archive, theme, music, clear, time, whoami",
     about: () => "Raven — a personal corner for code, games, music and memories.",
     whoami: () => "guest@raven — visitor session (local only)",
     socials: () => "Facebook: facebook.com/28OOO | TikTok: @28x1o | YouTube: @0ox0 | Discord: 900581050256850984",
     projects: () => "Projects: Raven terminal / visual experiments / game dev notes. Status: in progress.",
+    archive: () => { openOverlay("archiveOverlay"); return "Opening the sealed archive…"; },
     time: () => `Local time: ${new Date().toLocaleString()}`,
     theme: () => { openOverlay("themeOverlay"); return "Opening theme selector…"; },
     music: () => { toggleMusic(); return `Music ${music.paused ? "paused" : "play requested"}.`; },
@@ -438,57 +489,97 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
   });
   terminalPrint("Connection established. Welcome to the void.", "prompt");
 
-  // Music controls and audio-reactive bars when the browser allows Web Audio access.
+  // The archive puzzle and its message are entirely client-side; no data is transmitted.
+  const archiveForm = $("#archiveForm"), archiveAnswer = $("#archiveAnswer");
+  archiveForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const answer = archiveAnswer.value.trim().toLowerCase().replace(/[.!?]+$/g, "");
+    const correct = answer === "shadow" || answer === "a shadow" || answer === "the shadow";
+    if (correct) {
+      $("#archiveSecret").hidden = false;
+      $("#archiveFeedback").textContent = "Access granted. Fragment recovered.";
+      archiveAnswer.setAttribute("aria-invalid", "false");
+    } else {
+      $("#archiveFeedback").textContent = answer ? "Access denied. Think about what light creates." : "Enter a key to continue.";
+      archiveAnswer.setAttribute("aria-invalid", "true");
+    }
+  });
+
+  // Music playback: keep native media playback independent from Web Audio CORS.
+  // This prevents cross-origin analyser routing from muting otherwise playable audio.
   const music = $("#music"), musicToggle = $("#musicToggle"), musicState = $("#musicState"), visualizer = $("#visualizer");
-  for (let i=0;i<22;i++) visualizer.appendChild(document.createElement("span"));
-  let audioContext = null, analyser = null, sourceNode = null, audioData = null;
-  let audioFrame = 0;
-  function setupAnalyser() {
-    if (analyser || !window.AudioContext && !window.webkitAudioContext) return;
-    try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      audioContext = new AudioContextClass();
-      analyser = audioContext.createAnalyser(); analyser.fftSize = 64;
-      sourceNode = audioContext.createMediaElementSource(music);
-      sourceNode.connect(analyser); analyser.connect(audioContext.destination);
-      audioData = new Uint8Array(analyser.frequencyBinCount);
-    } catch (_) { analyser = null; }
-  }
-  function drawAudio() {
-    if (!analyser || music.paused) return;
-    analyser.getByteFrequencyData(audioData);
-    [...visualizer.children].forEach((bar, i) => {
-      const value = audioData[i % audioData.length] || 0;
-      bar.style.height = `${Math.max(3, 3 + value / 255 * 18)}px`;
+  for (let i=0;i<28;i++) visualizer.appendChild(document.createElement("span"));
+  let audioFrame = 0, visualPhase = 0, musicStartedAt = 0;
+  const bars = [...visualizer.children];
+  function animateVisualizer() {
+    audioFrame = 0;
+    if (music.paused || document.hidden || motionOff) return;
+    visualPhase += 0.095;
+    const t = performance.now() / 1000;
+    bars.forEach((bar, i) => {
+      const envelope = Math.abs(Math.sin(t * (1.45 + (i % 5) * .09) + i * .53));
+      const wave = Math.abs(Math.sin(visualPhase + i * .39));
+      const lowPulse = (Math.sin(t * 2.1) + 1) * .5;
+      const height = 3 + envelope * (5 + lowPulse * 8) + wave * 4;
+      bar.style.height = `${height.toFixed(1)}px`;
+      bar.style.opacity = String(.48 + envelope * .52);
     });
-    audioFrame = requestAnimationFrame(drawAudio);
+    document.body.style.setProperty("--sound-pulse", String(.35 + (Math.sin(t * 2.1) + 1) * .325));
+    audioFrame = requestAnimationFrame(animateVisualizer);
+  }
+  function startVisualizer() {
+    visualizer.classList.add("playing");
+    document.body.classList.add("music-active");
+    if (!motionOff && !document.hidden && !audioFrame) audioFrame = requestAnimationFrame(animateVisualizer);
+    $("#signalState").textContent = "AUDIO / PLAYING";
+  }
+  function stopVisualizer() {
+    if (audioFrame) cancelAnimationFrame(audioFrame);
+    audioFrame = 0;
+    visualizer.classList.remove("playing");
+    document.body.classList.remove("music-active");
+    bars.forEach(bar => { bar.style.height = "4px"; bar.style.opacity = ".65"; });
+    document.body.style.setProperty("--sound-pulse", ".35");
   }
   async function toggleMusic() {
     if (music.paused) {
       try {
-        setupAnalyser();
-        if (audioContext && audioContext.state === "suspended") await audioContext.resume();
-        await music.play();
-        musicToggle.textContent = "Ⅱ"; musicToggle.setAttribute("aria-label","Pause music");
+        musicState.textContent = "Connecting to soundtrack…";
+        // Calling play directly from the click handler preserves browser user-gesture permission.
+        const playPromise = music.play();
+        await playPromise;
+        musicToggle.textContent = "Ⅱ";
+        musicToggle.setAttribute("aria-label", "Pause music");
         musicState.textContent = "Now playing • Raven's soundtrack";
-        visualizer.classList.add("playing");
-        if (analyser) { cancelAnimationFrame(audioFrame); drawAudio(); }
-        else $("#signalState").textContent = "AUDIO / PLAYING";
-      } catch (_) {
-        musicState.textContent = "Playback unavailable — check the audio link";
-        toast("The browser could not play this audio.");
+        musicStartedAt = performance.now();
+        startVisualizer();
+      } catch (error) {
+        musicState.textContent = music.error ? "Audio source unavailable — the saved URL may be offline" : "Playback blocked — try pressing play again";
+        $("#signalState").textContent = "AUDIO / UNAVAILABLE";
+        toast(music.error ? "The soundtrack URL could not be loaded." : "The browser blocked playback. Press play again.");
       }
     } else {
-      music.pause(); musicToggle.textContent = "▶"; musicToggle.setAttribute("aria-label","Play music");
+      music.pause();
+      musicToggle.textContent = "▶";
+      musicToggle.setAttribute("aria-label", "Play music");
       musicState.textContent = "Paused • press play to resume";
-      visualizer.classList.remove("playing");
-      cancelAnimationFrame(audioFrame);
-      [...visualizer.children].forEach(bar => bar.style.height = "4px");
+      stopVisualizer();
+      $("#signalState").textContent = navigator.onLine ? "BROWSER / READY" : "OFFLINE";
     }
   }
   musicToggle.addEventListener("click", toggleMusic);
-  music.addEventListener("ended", () => { musicToggle.textContent = "▶"; musicState.textContent = "Track ended"; visualizer.classList.remove("playing"); });
-  music.addEventListener("error", () => { musicState.textContent = "Audio source unavailable"; });
+  music.addEventListener("playing", startVisualizer);
+  music.addEventListener("pause", () => {
+    if (!music.ended) stopVisualizer();
+    if (music.paused) { musicToggle.textContent = "▶"; musicToggle.setAttribute("aria-label", "Play music"); }
+  });
+  music.addEventListener("waiting", () => { if (!music.paused) musicState.textContent = "Buffering soundtrack…"; });
+  music.addEventListener("canplay", () => { if (musicState.textContent.includes("Connecting")) musicState.textContent = "Soundtrack ready"; });
+  music.addEventListener("ended", () => { musicToggle.textContent = "▶"; musicState.textContent = "Track ended"; stopVisualizer(); });
+  music.addEventListener("error", () => {
+    musicState.textContent = "Audio source unavailable — the saved URL may be offline";
+    $("#signalState").textContent = "AUDIO / UNAVAILABLE";
+  });
 
   // Copy current page URL, with a safe fallback.
   function toast(message) {
@@ -509,55 +600,96 @@ body.theme-blood{--bg:#100609;--panel:rgba(28,10,15,.78);--panel-strong:rgba(17,
     } catch (_) { toast("Copy unavailable — copy the address bar URL."); }
   });
 
-  // Lightweight canvas particles; pause when reduced motion is requested or tab is hidden.
+  // Cinematic particle field: star depth, connective filaments, cursor wake and a soft pulse.
   const canvas = $("#particleCanvas"), ctx = canvas.getContext("2d");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let particles = [], pointer = {x:-1000,y:-1000}, motionOff = reducedMotion.matches, raf = 0, dpr = 1;
+  let particles = [], pointer = {x:-1000,y:-1000,px:-1000,py:-1000}, motionOff = reducedMotion.matches, raf = 0, dpr = 1;
+  const cursorHalo = $("#cursorHalo");
   function resizeCanvas() {
-    dpr = Math.min(window.devicePixelRatio || 1, 1.7);
-    canvas.width = Math.floor(innerWidth * dpr); canvas.height = Math.floor(innerHeight * dpr);
-    canvas.style.width = `${innerWidth}px`; canvas.style.height = `${innerHeight}px`;
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.max(1, Math.floor(window.innerWidth * dpr));
+    canvas.height = Math.max(1, Math.floor(window.innerHeight * dpr));
+    canvas.style.width = `${window.innerWidth}px`; canvas.style.height = `${window.innerHeight}px`;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count = Math.min(64, Math.floor(innerWidth * innerHeight / 19000));
-    particles = Array.from({length:count}, () => ({
-      x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-      vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
-      r:Math.random()*1.5+.35,a:Math.random()*.42+.12
+    const area = window.innerWidth * window.innerHeight;
+    const count = Math.max(28, Math.min(105, Math.floor(area / 11500)));
+    particles = Array.from({length:count}, (_,i) => ({
+      x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+      vx:(Math.random()-.5)*(.12 + Math.random()*.18), vy:(Math.random()-.5)*(.12 + Math.random()*.18),
+      r:Math.random()*1.35+.25, a:Math.random()*.48+.13, depth:Math.random(), phase:Math.random()*Math.PI*2,
+      twinkle:Math.random()*.012+.003, hue:i%4
     }));
   }
-  function particleLoop() {
+  function particleLoop(now=0) {
     raf = 0;
     if (motionOff || document.hidden) return;
-    ctx.clearRect(0,0,innerWidth,innerHeight);
+    const w = window.innerWidth, h = window.innerHeight;
+    ctx.clearRect(0,0,w,h);
     const style = getComputedStyle(document.body);
     const rgb = style.getPropertyValue("--accent-rgb").trim() || "199,164,216";
+    const t = now * .001, pulse = music.paused ? .15 : .5 + .5*Math.sin(t*2.1);
+    // Diffuse halo near pointer, painted on canvas for a soft atmospheric response.
+    if (pointer.x > -500) {
+      const glow = ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,240);
+      glow.addColorStop(0,`rgba(${rgb},${.055 + pulse*.035})`); glow.addColorStop(1,`rgba(${rgb},0)`);
+      ctx.fillStyle = glow; ctx.fillRect(pointer.x-240,pointer.y-240,480,480);
+    }
+    // Slow parallax drift and individual star twinkle.
     particles.forEach((p,i) => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < -5) p.x = innerWidth+5; if (p.x > innerWidth+5) p.x = -5;
-      if (p.y < -5) p.y = innerHeight+5; if (p.y > innerHeight+5) p.y = -5;
+      p.phase += p.twinkle;
+      p.x += p.vx + (pointer.x > -500 ? (pointer.x-w/2)*p.depth*.000012 : 0);
+      p.y += p.vy + (pointer.y > -500 ? (pointer.y-h/2)*p.depth*.000012 : 0);
+      if (p.x < -12) p.x = w+12; if (p.x > w+12) p.x = -12;
+      if (p.y < -12) p.y = h+12; if (p.y > h+12) p.y = -12;
       const dx=pointer.x-p.x,dy=pointer.y-p.y,dist=Math.hypot(dx,dy);
-      if (dist<110 && dist>0) { p.x -= dx/dist*.12; p.y -= dy/dist*.12; }
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${rgb},${p.a})`;ctx.fill();
+      if (dist<125 && dist>0) { const force=(1-dist/125)*.22; p.x -= dx/dist*force; p.y -= dy/dist*force; }
+      const alpha = Math.max(.06,p.a*(.65 + .35*Math.sin(p.phase)));
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(1+p.depth*.5),0,Math.PI*2);
+      ctx.fillStyle = `rgba(${rgb},${alpha})`; ctx.fill();
+      if (p.depth>.72 && p.r>1.1) {
+        ctx.beginPath();ctx.moveTo(p.x-p.r*3,p.y);ctx.lineTo(p.x+p.r*3,p.y);ctx.moveTo(p.x,p.y-p.r*3);ctx.lineTo(p.x,p.y+p.r*3);
+        ctx.strokeStyle=`rgba(${rgb},${alpha*.42})`;ctx.lineWidth=.5;ctx.stroke();
+      }
       for (let j=i+1;j<particles.length;j++) {
         const q=particles[j],dd=Math.hypot(p.x-q.x,p.y-q.y);
-        if (dd<95) {ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(${rgb},${.075*(1-dd/95)})`;ctx.lineWidth=.6;ctx.stroke();}
+        if (dd<88 && p.depth>.3 && q.depth>.3) {
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(${rgb},${.09*(1-dd/88)*(music.paused?1:1.25)})`;ctx.lineWidth=.55;ctx.stroke();
+        }
       }
     });
+    // Short, fading wake follows the mouse; this is independent of any network resource.
+    if (pointer.x>-500 && Math.hypot(pointer.x-pointer.px,pointer.y-pointer.py)>1) {
+      const trail=ctx.createLinearGradient(pointer.px,pointer.py,pointer.x,pointer.y);
+      trail.addColorStop(0,`rgba(${rgb},0)`); trail.addColorStop(1,`rgba(${rgb},${.24 + pulse*.12})`);
+      ctx.beginPath();ctx.moveTo(pointer.px,pointer.py);ctx.lineTo(pointer.x,pointer.y);
+      ctx.strokeStyle=trail;ctx.lineWidth=1.25+pulse*.65;ctx.stroke();
+    }
+    pointer.px += (pointer.x-pointer.px)*.08; pointer.py += (pointer.y-pointer.py)*.08;
     raf = requestAnimationFrame(particleLoop);
   }
   function startParticles() { if (!motionOff && !document.hidden && !raf) raf = requestAnimationFrame(particleLoop); }
-  function stopParticles() { if (raf) cancelAnimationFrame(raf); raf=0; if(ctx) ctx.clearRect(0,0,innerWidth,innerHeight); }
+  function stopParticles() { if (raf) cancelAnimationFrame(raf); raf=0; if(ctx) ctx.clearRect(0,0,window.innerWidth,window.innerHeight); }
   function setMotionOff(value) {
     motionOff = value; document.body.classList.toggle("reduce-motion", value);
     $("#motionToggle").setAttribute("aria-pressed", String(value));
     $("#motionToggle").textContent = value ? "✦" : "✧";
-    if (value) stopParticles(); else startParticles();
-    toast(value ? "Reduced motion enabled." : "Atmospheric effects enabled.");
+    if (value) { stopParticles(); if (audioFrame) cancelAnimationFrame(audioFrame); audioFrame=0; }
+    else { startParticles(); if (!music.paused) startVisualizer(); }
+    toast(value ? "Reduced motion enabled." : "Cinematic effects enabled.");
   }
   $("#motionToggle").addEventListener("click", () => setMotionOff(!motionOff));
   window.addEventListener("resize", () => { resizeCanvas(); startParticles(); });
-  window.addEventListener("pointermove", event => { pointer.x=event.clientX;pointer.y=event.clientY; }, {passive:true});
-  document.addEventListener("visibilitychange", () => document.hidden ? stopParticles() : startParticles());
+  window.addEventListener("pointermove", event => {
+    pointer.x=event.clientX;pointer.y=event.clientY;
+    document.body.classList.add("pointer-active");
+    if (cursorHalo) cursorHalo.style.transform = `translate3d(${event.clientX}px,${event.clientY}px,0) translate3d(-50%,-50%,0)`;
+  }, {passive:true});
+  window.addEventListener("pointerleave", () => document.body.classList.remove("pointer-active"));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { stopParticles(); if (audioFrame) cancelAnimationFrame(audioFrame); audioFrame=0; }
+    else { startParticles(); if (!music.paused && !motionOff) startVisualizer(); }
+  });
   resizeCanvas(); startParticles();
 
   // A small, honest status indicator; no network presence or analytics is claimed.
